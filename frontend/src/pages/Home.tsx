@@ -1,17 +1,3 @@
-type Status = "COMPLETE" | "INCOMPLETE";
-
-interface Task {
-    title: string,
-    status: Status
-}
-
-interface Project {
-    title: string,
-    description: string,
-    status: Status,
-    tasks: Task[],
-}
-
 export default function Home() {
     const projects: Project[] = []; // some role based API fetch that gets all projects
 
