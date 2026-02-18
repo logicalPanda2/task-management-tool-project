@@ -27,7 +27,7 @@ export default function Home() {
         ))
         : <>
             <p className="text-center text-2xl text-neutral-900 mb-2">There are no projects yet.</p>
-            <p className="flex flex-row items-center justify-center gap-2.5 text-xl text-neutral-900">Create a new project by clicking the <span className="text-xs bg-black text-white rounded px-2.5 py-1 mt-0.5">New</span> button!</p>
+            <p className="relative text-center text-xl text-neutral-900">Create a new project by clicking the <span className="relative bottom-0.75 text-xs bg-black text-white rounded px-2.5 py-1">New</span> button!</p>
         </>
     );
 }
