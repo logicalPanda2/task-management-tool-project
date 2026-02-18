@@ -1,3 +1,3 @@
 export default function Project() {
-    return <>Create or edit projects here</>
+    return <>Project view will happen here. adding new tasks, commenting and changing task status happens here.</>
 }
