@@ -1,5 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function NotFound() {
     return (
-        <p>Not found placeholder</p>
+        <main className="min-h-screen p-12">
+            <h1 className="text-4xl mb-8">404 Not Found</h1>
+            <p className="text-2xl mb-4">The page you were looking for does not exist.</p>
+            <Link to={"/"} className="text-2xl underline hover:no-underline focus-visible:outline-0 focus-visible:no-underline">Back to Home</Link>
+        </main>
     );
 }
