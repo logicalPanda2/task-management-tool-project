@@ -7,7 +7,6 @@ CREATE TYPE project_task_status AS ENUM (
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
