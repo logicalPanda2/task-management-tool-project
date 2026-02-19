@@ -1,10 +1,17 @@
 import { useState } from "react";
 
+type User = {
+    email: string,
+    id: number,
+}
+
 export default function CreateEdit() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [tasks, setTasks] = useState<FormTask[]>([]);
     const [taskTitles, setTaskTitles] = useState<Record<string, string>>({});
+    const [userEmail, setUserEmail] = useState<string>("");
+    const [userEmails, setUserEmails] = useState<User[]>([]);
 
     const addNewTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         e.preventDefault();
@@ -22,6 +29,28 @@ export default function CreateEdit() {
         });
 
         setTasks([...tasks, newTask]);
+    }
+
+    const addUser = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+        e.preventDefault();
+
+        setUserEmails([
+            ...userEmails,
+            {
+                email: userEmail,
+                id: 2,
+            },
+        ]);
+
+        setUserEmail("");
+    }
+
+    const deleteUser = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, user: User): void => {
+        e.preventDefault();
+
+        setUserEmails([
+            ...userEmails.filter(u => u.id !== user.id),
+        ]);
     }
     
     return (
@@ -61,12 +90,10 @@ export default function CreateEdit() {
             </section>
             <section className="mb-6">
                 <header>
-                    <h2 className="text-2xl mb-4">Project tasks</h2>
+                    <h2 className="text-2xl mb-4">Tasks</h2>
                 </header>
                 <button className="bg-black rounded text-white px-3 py-1.5 focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 transition mb-4" onClick={(e) => addNewTask(e)}>Add task</button>
                 {tasks.map((task) => {
-                    console.log(tasks);
-
                     return <div className="mb-4" key={task.title}>
                         <label htmlFor={task.formName} className="mb-1 inline-block">{task.title}</label>
                         <input
@@ -85,6 +112,34 @@ export default function CreateEdit() {
                         />
                     </div>
                 })}
+            </section>
+            <section className="mb-6">
+                <header>
+                    <h2 className="text-2xl mb-4">Users</h2>
+                </header>
+                <div className="flex flex-row flex-nowrap items-center mb-4">
+                    <input
+                        required
+                        autoComplete="false"
+                        type="text"
+                        name="userEmail"
+                        id="userEmailInput"
+                        placeholder="Add someone.."
+                        className="border rounded focus-visible:outline-1 px-4 py-2"
+                        value={userEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                    />
+                    <button className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4" onClick={(e) => addUser(e)}>Add</button>
+                </div>
+                {userEmails.length > 0
+                    ? userEmails.map((u) => (
+                        <div className="flex flex-row flex-nowrap justify-between items-center mb-4 border max-w-2xl p-4 rounded" key={u.id}>
+                            <p>{u.email}</p>
+                            <button className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2" onClick={(e) => deleteUser(e, u)}>Remove</button>
+                        </div>
+                    ))
+                    : <p className="text-xl text-neutral-900">There are no added users yet.</p>
+                }
             </section>
             <input 
                 type="submit" 
