@@ -21,7 +21,8 @@ export default function Project() {
                 status: "INCOMPLETE",
                 id: crypto.randomUUID(),
             },
-        ]
+        ],
+        id: crypto.randomUUID(),
     }); // will be replaced by fetch based on parameters
 
     const markTaskAsDone = (task: Task): void => {

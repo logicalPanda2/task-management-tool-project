@@ -11,6 +11,7 @@ interface Project {
     description: string,
     status: Status,
     tasks: Task[],
+    id: string,
 }
 
 interface FormTask extends Task {
