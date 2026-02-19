@@ -24,6 +24,10 @@ export default function Project() {
         ],
         id: crypto.randomUUID(),
     }); // will be replaced by fetch based on parameters
+    const comments: Record<string, string> = {
+        "User 1": "Cool project my guy",
+        "User 2": "Looks good dude. Good luck!"
+    };
 
     const markTaskAsDone = (task: Task): void => {
         const taskStatus: Status = "COMPLETE";
@@ -55,7 +59,7 @@ export default function Project() {
                 <p className="text-xl mb-2 max-w-2xl">{placeholderProject.description}</p>
                 <p className="text-xl max-w-2xl">This project is <span className="font-semibold">{placeholderProject.status.toLowerCase()}</span>.</p>
             </section>
-            <section>
+            <section className="mb-8">
                 <header>
                     <h2 className="text-3xl mb-4">Tasks</h2>
                 </header>
@@ -71,6 +75,20 @@ export default function Project() {
                         </div>
                     ))
                     : <p className="text-xl bg-neutral-900">There are no tasks yet.</p>
+                }
+            </section>
+            <section>
+                <header>
+                    <h2 className="text-3xl mb-4">Comments</h2>
+                </header>
+                {Object.entries(comments).length > 0
+                    ? Object.entries(comments).map(([key, value]) => (
+                        <div className="relative mb-4 border max-w-2xl p-4 rounded">
+                            <p className="mb-2">{key}</p>
+                            <p className="text-xl">{value}</p>
+                        </div>
+                    ))
+                    : <p className="text-xl bg-neutral-900">There are no comments yet.</p>
                 }
             </section>
         </article>
