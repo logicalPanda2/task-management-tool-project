@@ -44,11 +44,32 @@ export default function Project() {
     ]);
     const [comment, setComment] = useState<string>(""); 
 
-    const markTaskAsDone = (task: Task): void => {
+    const markTaskAsComplete = (task: Task): void => {
         const taskStatus: Status = "COMPLETE";
         const target = placeholderProject.tasks.find(t => t.id === task.id);
 
-        if(!target) throw new Error("Cannot mark as done; task not found.");
+        if(!target) throw new Error("Cannot mark as complete; task not found.");
+
+        const newTask = {
+            ...target,
+            status: taskStatus,
+        }
+
+        const copy = [...placeholderProject.tasks];
+
+        const newTasks = copy.map(t => t.id === task.id ? newTask : t);
+
+        setProject({
+            ...placeholderProject,
+            tasks: newTasks,
+        });
+    }
+
+    const markTaskAsIncomplete = (task: Task): void => {
+        const taskStatus: Status = "INCOMPLETE";
+        const target = placeholderProject.tasks.find(t => t.id === task.id);
+
+        if(!target) throw new Error("Cannot mark as incomplete; task not found.");
 
         const newTask = {
             ...target,
@@ -96,15 +117,18 @@ export default function Project() {
                         <div className="flex flex-row justify-between items-center relative mb-4 border max-w-2xl p-4 rounded" key={task.id}>
                             <p className="text-xl ml-2">{task.title}</p>
                             {task.status === "INCOMPLETE" 
-                                ? <button className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800" onClick={() => markTaskAsDone(task)}>Mark as done</button>
-                                : <p className="mr-6">Finished</p>
+                                ? <button className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800" onClick={() => markTaskAsComplete(task)}>Mark as done</button>
+                                : <div>
+                                    <p className="mr-4 inline-block">Complete</p>
+                                    <button className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800" onClick={() => markTaskAsIncomplete(task)}>Revert</button>
+                                </div>
                             }
                         </div>
                     ))
                     : <p className="text-xl bg-neutral-900">There are no tasks yet.</p>
                 }
             </section>
-            <section>
+            <section className="mb-8">
                 <header>
                     <h2 className="text-3xl mb-4">Comments</h2>
                 </header>
@@ -132,6 +156,8 @@ export default function Project() {
                     <button className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4" onClick={postComment}>Post</button>
                 </div>
             </section>
+            <button className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1.5 px-4 mr-4 transition">Edit Project</button>
+            <button className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 py-1.5 px-4 transition">Delete Project</button>
         </article>
     </>);
 }
