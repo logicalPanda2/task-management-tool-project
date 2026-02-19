@@ -2,7 +2,8 @@ type Status = "COMPLETE" | "INCOMPLETE";
 
 interface Task {
     title: string,
-    status: Status
+    status: Status,
+    formName: string,
 }
 
 interface Project {
