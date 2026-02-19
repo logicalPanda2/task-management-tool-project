@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Create() {
+export default function CreateEdit() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [tasks, setTasks] = useState<FormTask[]>([]);
