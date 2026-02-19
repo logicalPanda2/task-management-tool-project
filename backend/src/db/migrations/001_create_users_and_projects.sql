@@ -14,7 +14,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE projects (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(255) NOT NULL,
     description TEXT,
     status project_task_status DEFAULT 'INCOMPLETE',
@@ -23,7 +23,7 @@ CREATE TABLE projects (
 
 CREATE TABLE user_projects (
     user_id INTEGER NOT NULL,
-    project_id INTEGER NOT NULL,
+    project_id UUID NOT NULL,
     user_role VARCHAR(100) NOT NULL,
 
     PRIMARY KEY (user_id, project_id),
@@ -38,10 +38,10 @@ CREATE TABLE user_projects (
 );
 
 CREATE TABLE tasks (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(255) NOT NULL,
     status project_task_status DEFAULT 'INCOMPLETE',
-    project_id INTEGER NOT NULL,
+    project_id UUID NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
 
     FOREIGN KEY (project_id)
