@@ -3,7 +3,7 @@ type Status = "COMPLETE" | "INCOMPLETE";
 interface Task {
     title: string,
     status: Status,
-    formName: string,
+    id: string,
 }
 
 interface Project {
@@ -11,4 +11,8 @@ interface Project {
     description: string,
     status: Status,
     tasks: Task[],
+}
+
+interface FormTask extends Task {
+    formName: string,
 }

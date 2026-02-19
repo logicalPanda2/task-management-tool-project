@@ -3,16 +3,17 @@ import { useState } from "react";
 export default function Create() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<FormTask[]>([]);
     const [taskTitles, setTaskTitles] = useState<Record<string, string>>({});
 
     const addNewTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         e.preventDefault();
 
-        const newTask: Task = {
+        const newTask: FormTask = {
             title: `Task ${tasks.length + 1}`,
             status: "INCOMPLETE",
             formName: `task${tasks.length + 1}`,
+            id: crypto.randomUUID(),
         };
 
         setTaskTitles({
