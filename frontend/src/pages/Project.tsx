@@ -3,6 +3,7 @@ import { useState } from "react";
 interface Comment {
     user: string,
     text: string,
+    id: number,
 }
 
 export default function Project() {
@@ -33,10 +34,12 @@ export default function Project() {
         {
             user: "User 1",
             text: "Cool project my guy",
+            id: 1,
         },
         {
             user: "User 2",
             text: "Looks good dude, good luck!",
+            id: 2,
         }
     ]);
     const [comment, setComment] = useState<string>(""); 
@@ -67,7 +70,8 @@ export default function Project() {
             ...comments,
             {
                 user: "User 1",
-                text: comment,   
+                text: comment,
+                id: 3
             }
         ]);
 
@@ -89,7 +93,7 @@ export default function Project() {
                 </header>
                 {placeholderProject.tasks.length > 0
                     ? placeholderProject.tasks.map((task) => (
-                        <div className="flex flex-row justify-between items-center relative mb-4 border max-w-2xl p-4 rounded">
+                        <div className="flex flex-row justify-between items-center relative mb-4 border max-w-2xl p-4 rounded" key={task.id}>
                             <p className="text-xl ml-2">{task.title}</p>
                             {task.status === "INCOMPLETE" 
                                 ? <button className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800" onClick={() => markTaskAsDone(task)}>Mark as done</button>
@@ -106,7 +110,7 @@ export default function Project() {
                 </header>
                 {comments.length > 0
                     ? comments.map((c) => (
-                        <div className="relative mb-4 border max-w-2xl p-4 rounded">
+                        <div className="relative mb-4 border max-w-2xl p-4 rounded" key={c.id}>
                             <p className="mb-2">{c.user}</p>
                             <p className="text-xl">{c.text}</p>
                         </div>
