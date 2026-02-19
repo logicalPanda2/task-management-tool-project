@@ -48,4 +48,20 @@ CREATE TABLE tasks (
         ON DELETE CASCADE
 );
 
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    user_id INTEGER NOT NULL,
+    project_id UUID NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(id)
+        ON DELETE CASCADE
+);
+
 COMMIT;
