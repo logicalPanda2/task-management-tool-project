@@ -36,10 +36,9 @@ export default function Project() {
             status: taskStatus,
         }
 
-        const newTasks = [
-            newTask,
-            ...placeholderProject.tasks.filter(t => t.id !== task.id),
-        ]
+        const copy = [...placeholderProject.tasks];
+
+        const newTasks = copy.map(t => t.id === task.id ? newTask : t);
 
         setProject({
             ...placeholderProject,
@@ -66,7 +65,7 @@ export default function Project() {
                             <p className="text-xl ml-6">{task.title}</p>
                             <div className={`absolute top-2 left-2 border w-3 h-3 rounded-full ${task.status === "INCOMPLETE" ? "bg-black" : "bg-white"}`}></div>
                             {task.status === "INCOMPLETE" 
-                                ? <button className="mr-6 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800" onClick={() => markTaskAsDone(task)}>Mark as done</button>
+                                ? <button className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800" onClick={() => markTaskAsDone(task)}>Mark as done</button>
                                 : <p className="mr-6">Finished</p>
                             }
                         </div>
