@@ -24,10 +24,11 @@ export default function Project() {
         ],
         id: crypto.randomUUID(),
     }); // will be replaced by fetch based on parameters
-    const comments: Record<string, string> = {
+    const [comments, setComments] = useState<Record<string, string>>({
         "User 1": "Cool project my guy",
         "User 2": "Looks good dude. Good luck!"
-    };
+    });
+    const [comment, setComment] = useState<string>(""); 
 
     const markTaskAsDone = (task: Task): void => {
         const taskStatus: Status = "COMPLETE";
@@ -48,6 +49,15 @@ export default function Project() {
             ...placeholderProject,
             tasks: newTasks,
         });
+    }
+
+    const postComment = (): void => {
+        setComments({
+            ...comments, 
+            [`User 3`]: `${comment}`,
+        });
+
+        setComment("");
     }
 
     return (<>
@@ -89,6 +99,20 @@ export default function Project() {
                     ))
                     : <p className="text-xl bg-neutral-900">There are no comments yet.</p>
                 }
+                <div className="flex flex-row flex-nowrap items-center mt-8">
+                    <input
+                        required
+                        autoComplete="false"
+                        type="text"
+                        name="comment"
+                        id="commentInput"
+                        placeholder="Say something.."
+                        className="border rounded focus-visible:outline-1 px-4 py-2"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                    <button className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4" onClick={postComment}>Post</button>
+                </div>
             </section>
         </article>
     </>);
