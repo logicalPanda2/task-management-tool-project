@@ -18,3 +18,7 @@ interface User {
     email: string,
     password: string,
 }
+
+interface HttpError extends Error {
+    status: number,
+}
