@@ -20,6 +20,11 @@ interface User {
     id: string,
 }
 
+interface SentUserData {
+    email: string,
+    password: string,
+}
+
 interface HttpError extends Error {
     status: number,
 }
