@@ -6,7 +6,6 @@ dotenv.config();
 export function generateAccessToken(user: User) {
     if(
         !process.env.JWT_ACCESS_SECRET ||
-        !process.env.JWT_REFRESH_SECRET ||
         !process.env.ACCESS_TOKEN_DURATION
     ) throw new Error("Secret keys not configured. Check .env.example for more information.");
 
@@ -22,6 +21,21 @@ export function generateAccessToken(user: User) {
     // assert as any to bypass StringValue type limitations on parameter
     // as reverse engineering the type definition isn't worth it.
     // make sure that the env variable complies with the "[number][m | d]" format
-    
+
     // will upgrade to safer and more robust version in due time.
+}
+
+export function generateRefreshToken(user: User) {
+    if(
+        !process.env.JWT_REFRESH_SECRET ||
+        !process.env.REFRESH_TOKEN_DURATION
+    ) throw new Error("Secret keys not configured. Check .env.example for more information.");
+
+    return jwt.sign(
+        { id: user.id },
+        process.env.JWT_REFRESH_SECRET,
+        { expiresIn: process.env.REFRESH_TOKEN_DURATION as any },
+    );
+
+    // same reason for as any assertion as explained above
 }
