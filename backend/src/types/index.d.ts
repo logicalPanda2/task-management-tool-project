@@ -17,6 +17,7 @@ interface Project {
 interface User {
     email: string,
     password: string,
+    id: string,
 }
 
 interface HttpError extends Error {
