@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { getUserByEmail } from "../users/userModel.js";
+import { getUserByEmail, getUserById } from "../users/userModel.js";
 import bcrypt from "bcryptjs";
 
 dotenv.config();
@@ -61,3 +61,11 @@ export async function verifyUserCredentials(
 
     return user;
 }
+
+export async function renewAccessToken(payload: { id: string }): Promise<null | string> {
+    const user = await getUserById(payload.id);
+
+    if(!user) return null;
+    
+    return generateAccessToken(user);
+} 
