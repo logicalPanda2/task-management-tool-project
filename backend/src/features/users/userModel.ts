@@ -1,6 +1,6 @@
 import pool from "../../config/db.js";
 
-export async function getUserByEmail(email: string): Promise<User> {
+export async function getUserByEmail(email: string): Promise<User | undefined> {
     const result = await pool?.query(
         `SELECT id, email, password FROM users WHERE email = $1;`,
         [email]
