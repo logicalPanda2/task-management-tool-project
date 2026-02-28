@@ -16,7 +16,7 @@ app.use(logMiddleware);
 // app.use(authMiddleware);
 
 app.use("/auth", authRouter);
-app.use("/project", projectRouter);
+app.use("/projects", projectRouter);
 app.use("/tasks", taskRouter);
 app.use("/comments", commentRouter);
 
