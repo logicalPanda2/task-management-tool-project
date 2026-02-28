@@ -12,7 +12,7 @@ export async function login(req: Request, res: Response, next: (...args: any[]) 
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
 
-        res.cookie( "refreshToken", refreshToken, {
+        res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
@@ -45,8 +45,16 @@ export function refresh(req: Request, res: Response, next: (...args: any[]) => a
     return undefined;
 }
 
-export function logout(req: Request, res: Response, next: (...args: any[]) => any) {
-    res.json({
-        message: "Credentials removed"
-    });
+export function logout(_req: Request, res: Response, next: (...args: any[]) => any) {
+    try {
+        res.cookie("refreshToken", "", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            expires: new Date(0),
+            maxAge: 0,
+        });
+    } catch(e) {
+        next(e);
+    }
 }
