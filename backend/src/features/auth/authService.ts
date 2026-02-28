@@ -40,13 +40,18 @@ export function generateRefreshToken(user: User) {
 	// same reason for as any assertion as explained above
 }
 
-export function verifyRefreshToken(token: string) {
+export function verifyRefreshToken(token: string): {id: string} | null {
 	if (!process.env.JWT_REFRESH_SECRET)
 		throw new Error(
 			"Secret keys not configured. Check .env.example for more information.",
 		);
 
-	return jwt.verify(token, process.env.JWT_REFRESH_SECRET) as { id: string };
+    try {
+        const data = jwt.verify(token, process.env.JWT_REFRESH_SECRET) as { id: string };
+        return data;
+    } catch(e) {
+        return null;
+    }
 }
 
 export async function verifyUserCredentials(

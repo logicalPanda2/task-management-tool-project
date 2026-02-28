@@ -43,12 +43,12 @@ export async function refresh(
 ) {
 	try {
 		const refreshToken = req.cookies?.refreshToken;
-
 		if (!refreshToken) return res.sendStatus(401);
 
-		const decodedUserData = verifyRefreshToken(refreshToken);
-		const accessToken = await renewAccessToken(decodedUserData);
+        const decodedUserData = verifyRefreshToken(refreshToken);
+        if(!decodedUserData) return res.sendStatus(401);
 
+		const accessToken = await renewAccessToken(decodedUserData);
 		if (!accessToken) return res.sendStatus(403);
 
 		res.json({ accessToken });
