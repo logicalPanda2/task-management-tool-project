@@ -1,4 +1,7 @@
 # Project Management Tool (WIP)
+
+### This project is planned to be completed, at the latest, before the end of March. 
+
 A full-stack project management tool built with React and Express.
 
 (Soon to be) features:
