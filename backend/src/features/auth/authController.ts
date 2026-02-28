@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { generateAccessToken, generateRefreshToken, verifyUserCredentials } from "./authService.js";
+import { generateAccessToken, generateRefreshToken, renewAccessToken, verifyRefreshToken, verifyUserCredentials } from "./authService.js";
 
 export async function login(req: Request, res: Response, next: (...args: any[]) => any) {
     try {
@@ -7,7 +7,7 @@ export async function login(req: Request, res: Response, next: (...args: any[]) 
 
         const user = await verifyUserCredentials(email, password);
 
-        if(!user) return res.status(401);
+        if(!user) return res.status(401).send("Invalid Credentials");
 
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
@@ -27,9 +27,22 @@ export async function login(req: Request, res: Response, next: (...args: any[]) 
 }
 
 export function refresh(req: Request, res: Response, next: (...args: any[]) => any) {
-    res.json({
-        message: "New access token granted"
-    });
+    try {
+        const refreshToken = req.cookies?.refreshToken;
+
+	    if(!refreshToken) return res.sendStatus(401);
+
+        const decodedUserData = verifyRefreshToken(refreshToken);
+        const accessToken = renewAccessToken(decodedUserData);
+
+        if(!accessToken) return res.sendStatus(403);
+
+        res.json({ accessToken });
+    } catch(e) {
+        next(e);
+    }
+
+    return undefined;
 }
 
 export function logout(req: Request, res: Response, next: (...args: any[]) => any) {
