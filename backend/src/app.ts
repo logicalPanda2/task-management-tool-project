@@ -4,6 +4,7 @@ import logMiddleware from "./shared/middlewares/logMiddleware.js";
 import errorMiddleware from "./shared/middlewares/errorMiddleware.js";
 import _authMiddleware from "./shared/middlewares/authMiddleware.js";
 import authRouter from "./features/auth/authRouter.js";
+import projectRouter from "./features/projects/projectRouter.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(logMiddleware);
 // app.use(authMiddleware);
 
 app.use("/auth", authRouter);
+app.use("/project", projectRouter);
 
 app.use(errorMiddleware);
 
