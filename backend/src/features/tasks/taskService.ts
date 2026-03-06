@@ -1,3 +1,5 @@
+import { addNewTasks } from "./taskModel.js";
+
 export function createInsertQueryForNTasks(taskArrLen: number) {
     let query = "INSERT INTO tasks (id, title, status, project_id) VALUES";
 
@@ -20,4 +22,11 @@ export function createDataArrForNTasks(tasks: Task[], projectId: string) {
     });
 
     return data;
+}
+
+export function createManyTasks(tasks: Task[], projectId: string) {
+    const query = createInsertQueryForNTasks(tasks.length);
+    const data = createDataArrForNTasks(tasks, projectId);
+
+    addNewTasks(query, data);
 }
