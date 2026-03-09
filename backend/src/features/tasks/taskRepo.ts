@@ -35,3 +35,12 @@ export async function deleteById(id: string) {
         [id]
     );
 }
+
+export async function getAllByProjectId(projectId: string): Promise<Task[]> {
+    const result = await pool?.query(
+        `SELECT * FROM tasks WHERE project_id = $1;`,
+        [projectId]
+    );
+
+    return result?.rows[0];
+}
