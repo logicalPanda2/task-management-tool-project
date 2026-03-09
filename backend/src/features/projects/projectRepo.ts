@@ -36,3 +36,10 @@ export async function create(project: Project) {
         [project.id, project.title, project.description, project.status]
     );
 }
+
+export async function deleteById(projectId: string) {
+    await pool?.query(
+        `DELETE FROM projects WHERE id = $1;`,
+        [projectId]
+    );
+}
