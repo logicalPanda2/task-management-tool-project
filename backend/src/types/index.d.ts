@@ -14,6 +14,11 @@ interface Project {
 	id: string;
 }
 
+interface ProjectComment {
+    userEmail: string,
+    content: string,
+}
+
 interface ProjectMetadata {
     title: string;
 	description: string;
