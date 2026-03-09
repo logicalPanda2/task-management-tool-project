@@ -1,12 +1,12 @@
 import type { Request, Response } from "express"
-import { getAllProjectMetadataByUserId, getProjectMetadataById } from "./projectRepo.js";
+import * as ProjectRepo from "./projectRepo.js";
 
 export async function getAllProjects(req: Request, res: Response, next: (...args: any[]) => any) {
     try {
         const user = req.user;
         if(!user) return res.sendStatus(401);
 
-        const projects: ProjectMetadata[] = await getAllProjectMetadataByUserId(user.id);
+        const projects: ProjectMetadata[] = await ProjectRepo.getAllByUserId(user.id);
 
         res.json({ projects: projects });
     } catch(e) {
@@ -25,7 +25,7 @@ export async function getProject(req: Request, res: Response, next: (...args: an
 
         const id = req.params.projectId;
 
-        const project: ProjectMetadata = await getProjectMetadataById(id);
+        const project: ProjectMetadata = await ProjectRepo.getById(id);
 
         return project;
     } catch(e) {
