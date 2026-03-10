@@ -16,5 +16,8 @@ export async function deleteById(id: string) {
 }
 
 export async function getAllByProjectId(projectId: string) {
-
+    await pool?.query(
+        `SELECT title FROM comments WHERE project_id = $1;`,
+        [projectId]
+    )
 }
