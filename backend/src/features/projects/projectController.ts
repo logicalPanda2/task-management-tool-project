@@ -43,10 +43,10 @@ export function createAndUpdate(project: Project) {
     // else create new
 }
 
-export function deleteById() {
+export function deleteById(id: string) {
     // call model without abstractions
 }
 
-export function invite() {
+export function invite(userEmail: string, projectId: string) {
     // call model without abstractions
 }
