@@ -29,7 +29,14 @@ export async function create(req: Request, res: Response, next: (...args: any[])
             typeof req.params.projectId !== "string"
         ) return res.sendStatus(400);
 
-        // service call here
+        const projectId = req.params.projectId;
+        const comment = req.body;
+        const user = req.user;
+
+        if(!user) return res.sendStatus(400);
+
+        if(!Services.postComment(comment, projectId, user.email))
+            return res.sendStatus(400);
 
         return res.sendStatus(204);
     } catch(e) {
