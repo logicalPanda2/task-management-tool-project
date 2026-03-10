@@ -7,7 +7,7 @@ import {
 	verifyUserCredentials,
     userDoesNotExist,
 } from "./authService.js";
-import { createNewUser } from "../users/userRepo.js";
+import * as userRepo from "../users/userRepo.js";
 import hashPassword from "../../shared/utils/hashPassword.js";
 
 export async function register(
@@ -23,7 +23,7 @@ export async function register(
 
         const hashed = await hashPassword(password);
         
-        await createNewUser(email, hashed);
+        await userRepo.createNewUser(email, hashed);
 
         return res.sendStatus(200);
     } catch(e) {

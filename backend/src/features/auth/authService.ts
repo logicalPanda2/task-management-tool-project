@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { getUserByEmail, getUserById } from "../users/userRepo.js";
+import * as userRepo from "../users/userRepo.js";
 import bcrypt from "bcryptjs";
 
 dotenv.config();
@@ -55,7 +55,7 @@ export function verifyRefreshToken(token: string): {id: string} | null {
 }
 
 export async function userDoesNotExist(email: string) {
-    const user = await getUserByEmail(email);
+    const user = await userRepo.getUserByEmail(email);
     
     if(!user) return true;
     else return false;
@@ -65,7 +65,7 @@ export async function verifyUserCredentials(
 	email: string,
 	password: string,
 ): Promise<null | User> {
-	const user = await getUserByEmail(email);
+	const user = await userRepo.getUserByEmail(email);
 
 	if (!user) return null;
 	if (user.email !== email) return null;
@@ -77,7 +77,7 @@ export async function verifyUserCredentials(
 export async function renewAccessToken(payload: {
 	id: string;
 }): Promise<null | string> {
-	const user = await getUserById(payload.id);
+	const user = await userRepo.getUserById(payload.id);
 
 	if (!user) return null;
 
