@@ -2,6 +2,7 @@ import type { Request, Response } from "express"
 import * as projectRepo from "./projectRepo.js";
 import * as userRepo from "./../users/userRepo.js";
 import { getFullProjectData } from "./projectService.js";
+import isProject from "../../shared/utils/typeGuards.js";
 
 export async function getAll(req: Request, res: Response, next: (...args: any[]) => any) {
     try {
@@ -39,9 +40,30 @@ export async function getById(req: Request, res: Response, next: (...args: any[]
     return undefined;
 }
 
-export function createAndUpdate(project: Project) {
-    // if get project.id exists then update
-    // else create new
+export async function createAndUpdate(req: Request, res: Response, next: (...args: any[]) => any) {
+    try {
+        const newProject = req.body;
+
+        if(
+            typeof newProject !== "object" ||
+            newProject === null ||
+            !(isProject(newProject))
+        ) return res.sendStatus(400);
+
+        const project = await projectRepo.getById(newProject.id);
+
+        if(!project) {
+            await projectRepo.create(newProject);
+        } else {
+            await projectRepo.updateById(newProject.id, newProject);
+        }
+
+        res.sendStatus(204);
+    } catch(e) {
+        next(e);
+    }
+
+    return undefined;
 }
 
 export async function deleteById(req: Request, res: Response, next: (...args: any[]) => any) {
