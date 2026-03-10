@@ -1,7 +1,6 @@
 import type { Request, Response } from "express"
 import * as projectRepo from "./projectRepo.js";
-import * as taskRepo from "./../tasks/taskRepo.js";
-import * as commentRepo from "./../comments/commentRepo.js";
+import { getFullProjectData } from "./projectService.js";
 
 export async function getAll(req: Request, res: Response, next: (...args: any[]) => any) {
     try {
@@ -27,17 +26,10 @@ export async function getById(req: Request, res: Response, next: (...args: any[]
 
         const id = req.params.projectId;
 
-        const metadata: ProjectMetadata = await projectRepo.getById(id);
-        const tasks: Task[] = await taskRepo.getAllByProjectId(id);
-        const comments: ProjectComment[] = await commentRepo.getAllByProjectId(id);
+        const project = await getFullProjectData(id);
 
         return res.json({
-            project: {
-                ...metadata,
-                comments: [...comments],
-                tasks: [...tasks],
-                id: id,
-            }
+            project: project
         });
     } catch(e) {
         next(e);
@@ -46,14 +38,15 @@ export async function getById(req: Request, res: Response, next: (...args: any[]
     return undefined;
 }
 
-export function createAndUpdate() {
-
+export function createAndUpdate(project: Project) {
+    // if get project.id exists then update
+    // else create new
 }
 
 export function deleteById() {
-
+    // call model without abstractions
 }
 
 export function invite() {
-
+    // call model without abstractions
 }
