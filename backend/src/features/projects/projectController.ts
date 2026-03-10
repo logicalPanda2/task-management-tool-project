@@ -50,7 +50,7 @@ export async function createOrUpdate(req: Request, res: Response, next: (...args
             !(isProject(project))
         ) return res.sendStatus(400);
 
-        Services.upsert(project);
+        await Services.upsert(project);
 
         res.sendStatus(204);
     } catch(e) {
