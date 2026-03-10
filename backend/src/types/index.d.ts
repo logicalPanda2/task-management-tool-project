@@ -15,8 +15,7 @@ interface Project {
 }
 
 interface ProjectComment {
-    userEmail: string,
-    content: string,
+    title: string,
 }
 
 interface ProjectMetadata {
