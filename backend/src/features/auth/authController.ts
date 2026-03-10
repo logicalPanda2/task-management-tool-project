@@ -7,6 +7,14 @@ import {
 	verifyUserCredentials,
 } from "./authService.js";
 
+export async function register(
+    req: Request,
+	res: Response,
+	next: (...args: any[]) => any,
+) {
+    
+}
+
 export async function login(
 	req: Request,
 	res: Response,

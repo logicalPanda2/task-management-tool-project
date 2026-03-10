@@ -1,10 +1,12 @@
 import express from "express";
-import { login, refresh, logout } from "./authController.js";
+import { login, refresh, logout, register } from "./authController.js";
+import authMiddleware from "../../shared/middlewares/authMiddleware.js";
 
 const authRouter = express.Router();
 
+authRouter.post("/register", register);
 authRouter.post("/login", login);
-authRouter.post("/logout", logout);
-authRouter.post("/refresh", refresh);
+authRouter.post("/logout", authMiddleware, logout);
+authRouter.post("/refresh", authMiddleware, refresh);
 
 export default authRouter;
