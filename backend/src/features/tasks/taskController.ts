@@ -1,11 +1,11 @@
-export function getTaskForProject() {
+export function getAll() {
 
 }
 
-export function addTaskToProject() {
+export function create() {
 
 }
 
-export function deleteTask() {
+export function remove() {
 
 }

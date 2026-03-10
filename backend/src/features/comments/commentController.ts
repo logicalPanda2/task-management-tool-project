@@ -1,11 +1,11 @@
-export function getCommentForProject() {
+export function getAll() {
 
 }
 
-export function addCommentToProject() {
+export function create() {
 
 }
 
-export function deleteComment() {
+export function remove() {
 
 }
