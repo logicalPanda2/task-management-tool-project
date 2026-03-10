@@ -37,7 +37,7 @@ export async function getById(req: Request, res: Response, next: (...args: any[]
                 comments: [...comments],
                 tasks: [...tasks],
                 id: id,
-            } as Project
+            }
         });
     } catch(e) {
         next(e);
