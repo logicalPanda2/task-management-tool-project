@@ -1,5 +1,6 @@
 import type { Request, Response } from "express"
 import * as projectRepo from "./projectRepo.js";
+import * as userRepo from "./../users/userRepo.js";
 import { getFullProjectData } from "./projectService.js";
 
 export async function getAll(req: Request, res: Response, next: (...args: any[]) => any) {
@@ -22,7 +23,7 @@ export async function getById(req: Request, res: Response, next: (...args: any[]
         if(
             !("projectId" in req.params) ||
             typeof req.params.projectId !== "string"
-        ) return res.send(400);
+        ) return res.sendStatus(400);
 
         const id = req.params.projectId;
 
@@ -43,8 +44,23 @@ export function createAndUpdate(project: Project) {
     // else create new
 }
 
-export async function deleteById(id: string) {
-    await projectRepo.deleteById(id);
+export async function deleteById(req: Request, res: Response, next: (...args: any[]) => any) {
+    try {
+        if(
+            !("projectId" in req.params) ||
+            typeof req.params.projectId !== "string"
+        ) return res.sendStatus(400);
+
+        const id = req.params.projectId;
+
+        await projectRepo.deleteById(id);
+
+        return res.sendStatus(204);
+    } catch(e) {
+        next(e);
+    }
+
+    return undefined;
 }
 
 export function invite(userEmail: string, projectId: string) {
