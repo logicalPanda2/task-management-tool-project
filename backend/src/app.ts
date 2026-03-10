@@ -13,9 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(logMiddleware);
+app.use("/auth", authRouter);
+
 // app.use(authMiddleware);
 
-app.use("/auth", authRouter);
 app.use("/projects", projectRouter);
 app.use("/tasks", taskRouter);
 app.use("/comments", commentRouter);
