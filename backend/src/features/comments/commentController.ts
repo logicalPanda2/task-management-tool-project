@@ -35,7 +35,7 @@ export async function create(req: Request, res: Response, next: (...args: any[])
 
         if(!user) return res.sendStatus(400);
 
-        if(!Services.postComment(comment, projectId, user.email))
+        if(!(await Services.postComment(comment, projectId, user.email)))
             return res.sendStatus(400);
 
         return res.sendStatus(204);
