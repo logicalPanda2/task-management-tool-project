@@ -63,6 +63,27 @@ export async function deleteById(req: Request, res: Response, next: (...args: an
     return undefined;
 }
 
-export function invite(userEmail: string, projectId: string) {
-    // call model without abstractions
+export async function invite(req: Request, res: Response, next: (...args: any[]) => any) {
+    try {
+        if(
+            !("projectId" in req.params) ||
+            typeof req.params.projectId !== "string" ||
+            !("userEmail" in req.params) ||
+            typeof req.params.userEmail !== "string"
+        ) return res.sendStatus(400);
+
+        const userEmail = req.params.userEmail;
+        const projectId = req.params.projectId;
+        const user = await userRepo.getUserByEmail(userEmail);
+
+        if(!user) return res.sendStatus(404);
+        
+        await userRepo.addUserToProject(projectId, user.id, "CONTRIBUTOR");
+
+        return res.sendStatus(204);
+    } catch(e) {
+        next(e);
+    }
+
+    return undefined;
 }
