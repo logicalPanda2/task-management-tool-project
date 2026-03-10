@@ -24,6 +24,7 @@ interface ProjectMetadata {
     title: string;
 	description: string;
 	status: Status;
+    id: string;
 }
 
 interface User {

@@ -5,7 +5,8 @@ export async function getAllByUserId(userId: string): Promise<ProjectMetadata[]>
         `SELECT
             p.title,
             p.description,
-            p.status
+            p.status,
+            p.id
         FROM
             projects p
         JOIN
@@ -22,7 +23,7 @@ export async function getAllByUserId(userId: string): Promise<ProjectMetadata[]>
 
 export async function getById(id: string): Promise<ProjectMetadata> {
     const result = await pool?.query(
-        `SELECT title, description, status FROM projects WHERE id = $1;`,
+        `SELECT title, description, status, id FROM projects WHERE id = $1;`,
         [id]
     );
 
