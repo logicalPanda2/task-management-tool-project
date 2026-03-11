@@ -20,7 +20,11 @@ export async function getAllByProjectId(
 	projectId: string,
 ): Promise<ProjectComment[]> {
 	const result = await pool?.query(
-		`SELECT title, id, user_id AS userid FROM comments WHERE project_id = $1;`,
+		`SELECT c.title, c.id, u.email 
+        FROM comments c
+        INNER JOIN users u
+        ON u.id = c.user_id
+        WHERE c.project_id = $1;`,
 		[projectId],
 	);
 

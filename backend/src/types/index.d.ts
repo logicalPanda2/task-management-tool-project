@@ -19,7 +19,7 @@ interface Project {
 interface ProjectComment {
 	title: string;
     id: number;
-    userid: number;
+    user: string;
 }
 
 interface ProjectMetadata {
