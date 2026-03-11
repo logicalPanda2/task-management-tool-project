@@ -31,6 +31,16 @@ export default function CreateEdit() {
 		setTasks([...tasks, newTask]);
 	};
 
+    const removeTask = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        task: Task
+    ): void => {
+        e.preventDefault();
+        setTaskErr("");
+
+        setTasks([...tasks.filter(t => t.id !== task.id)]);
+    }
+
 	const addUser = (
 		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
 	): void => {
@@ -179,6 +189,12 @@ export default function CreateEdit() {
 									]);
 								}}
 							/>
+                            <button
+								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2 mt-4"
+								onClick={(e) => removeTask(e, task)}
+							>
+								Remove
+							</button>
 						</div>
 					);
 				})}
