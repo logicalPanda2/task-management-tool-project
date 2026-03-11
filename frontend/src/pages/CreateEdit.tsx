@@ -13,6 +13,7 @@ export default function CreateEdit() {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [taskErr, setTaskErr] = useState<string>("");
 	const [userEmail, setUserEmail] = useState<string>("");
+    const [userCounter, setUserCounter] = useState<number>(0);
 	const [userErr, setUserErr] = useState<string>("");
 	const [userEmails, setUserEmails] = useState<User[]>([]);
 
@@ -77,11 +78,12 @@ export default function CreateEdit() {
 			...userEmails,
 			{
 				email: userEmail,
-				id: 2,
+				id: userCounter,
 			},
 		]);
 
 		setUserEmail("");
+        setUserCounter(c => c + 1);
 	};
 
 	const deleteUser = (
