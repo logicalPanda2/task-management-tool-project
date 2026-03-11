@@ -31,6 +31,20 @@ export default function CreateEdit() {
 		setTasks([...tasks, newTask]);
 	};
 
+    const editTaskStatus = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        task: Task,
+        status: Status,
+    ): void => {
+        e.preventDefault();
+        setTaskErr("");
+
+        setTasks([...tasks.map(t => t.id === task.id ? {
+            ...task,
+            status: status,
+        } : t)]);
+    }
+
     const removeTask = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
         task: Task
@@ -189,11 +203,24 @@ export default function CreateEdit() {
 									]);
 								}}
 							/>
+                            <p className="mt-2">Status: {task.status}</p>
                             <button
 								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2 mt-4"
 								onClick={(e) => removeTask(e, task)}
 							>
 								Remove
+							</button>
+                            <button
+								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
+								onClick={(e) => editTaskStatus(e, task, "COMPLETE")}
+							>
+								Mark as done
+							</button>
+                            <button
+								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
+								onClick={(e) => editTaskStatus(e, task, "INCOMPLETE")}
+							>
+								Mark as todo
 							</button>
 						</div>
 					);
