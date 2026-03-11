@@ -1,11 +1,5 @@
 import { useState } from "react";
 
-interface Comment {
-	user: string;
-	text: string;
-	id: number;
-}
-
 export default function Project() {
 	const [placeholderProject, setProject] = useState<Project>({
 		title: "Placeholder project",
@@ -32,15 +26,15 @@ export default function Project() {
         comments: null,
 		id: crypto.randomUUID(),
 	}); // will be replaced by fetch based on parameters
-	const [comments, setComments] = useState<Comment[]>([
+	const [comments, setComments] = useState<ProjectComment[]>([
 		{
 			user: "User 1",
-			text: "Cool project my guy",
+			title: "Cool project my guy",
 			id: 1,
 		},
 		{
 			user: "User 2",
-			text: "Looks good dude, good luck!",
+			title: "Looks good dude, good luck!",
 			id: 2,
 		},
 	]);
@@ -98,7 +92,7 @@ export default function Project() {
 			...comments,
 			{
 				user: "User 1",
-				text: comment,
+				title: comment,
 				id: 3,
 			},
 		]);
@@ -106,7 +100,7 @@ export default function Project() {
 		setComment("");
 	};
 
-	const deleteComment = (comment: Comment): void => {
+	const deleteComment = (comment: ProjectComment): void => {
 		setComments([...comments.filter((c) => c.id !== comment.id)]);
 	};
 
@@ -183,7 +177,7 @@ export default function Project() {
 							>
 								<div>
 									<p className="mb-2">{c.user}</p>
-									<p className="text-xl">{c.text}</p>
+									<p className="text-xl">{c.title}</p>
 								</div>
 								<button
 									className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2"

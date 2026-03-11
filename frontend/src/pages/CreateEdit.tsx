@@ -1,10 +1,5 @@
 import { useState } from "react";
 
-type User = {
-	email: string;
-	id: number;
-};
-
 export default function CreateEdit() {
 	const [title, setTitle] = useState<string>("");
 	const [titleErr, setTitleErr] = useState<string>("");

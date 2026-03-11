@@ -16,10 +16,6 @@ interface Project {
 	id: string;
 }
 
-interface ProjectComment {
-	title: string;
-}
-
 interface ProjectMetadata {
 	title: string;
 	description: string;
@@ -29,20 +25,11 @@ interface ProjectMetadata {
 
 interface User {
 	email: string;
-	password: string;
-	id: string;
+	id: number;
 }
 
-interface SentUserData {
-	email: string;
-	password: string;
-}
-
-interface DecodedUserData {
-	id: string;
-	email: string;
-}
-
-interface HttpError extends Error {
-	status: number;
+interface ProjectComment {
+	user: string;
+	title: string;
+	id: number;
 }
