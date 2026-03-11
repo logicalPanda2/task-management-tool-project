@@ -24,7 +24,7 @@ export default function Home() {
 					id: crypto.randomUUID(),
 				},
 			],
-            comments: null,
+			comments: null,
 			id: crypto.randomUUID(),
 		},
 	]; // some role based API fetch that gets all projects

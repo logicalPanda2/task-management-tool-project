@@ -4,13 +4,17 @@ import useUserEmails from "../hooks/useUserEmails";
 
 export default function CreateEdit() {
 	const {
-        title, setTitle,
-        titleErr, setTitleErr,
-        description, setDescription,
-        descriptionErr, setDescriptionErr,
-    } = useEditing();
-    const tasks = useTasks();
-    const users = useUserEmails();
+		title,
+		setTitle,
+		titleErr,
+		setTitleErr,
+		description,
+		setDescription,
+		descriptionErr,
+		setDescriptionErr,
+	} = useEditing();
+	const tasks = useTasks();
+	const users = useUserEmails();
 
 	const sendData = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
 		e.preventDefault();
@@ -24,13 +28,16 @@ export default function CreateEdit() {
 		tasks.setTaskErr("");
 		users.setUserErr("");
 
-		if (!tasks.tasks.length) tasks.setTaskErr("A project must have at least one task");
+		if (!tasks.tasks.length)
+			tasks.setTaskErr("A project must have at least one task");
 
 		if (!title.trim()) setTitleErr("Cannot be empty");
 		if (!description.trim()) setDescriptionErr("Cannot be empty");
 		tasks.tasks.forEach((task, i) => {
 			if (!task.title.trim())
-				tasks.setTaskErr(`All tasks must have a title. Check Task ${i + 1}`);
+				tasks.setTaskErr(
+					`All tasks must have a title. Check Task ${i + 1}`,
+				);
 		});
 
 		if (titleErr || descriptionErr || tasks.taskErr) {
@@ -88,14 +95,16 @@ export default function CreateEdit() {
 				<button
 					className="bg-black rounded text-white px-3 py-1.5 focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 transition mb-4"
 					onClick={(e) => {
-                        e.preventDefault();
-                        tasks.add();
-                    }}
+						e.preventDefault();
+						tasks.add();
+					}}
 				>
 					Add task
 				</button>
 				{tasks.taskErr && (
-					<span className="mb-4 text-red-600 block">{tasks.taskErr}</span>
+					<span className="mb-4 text-red-600 block">
+						{tasks.taskErr}
+					</span>
 				)}
 				{tasks.tasks.map((task, index) => {
 					return (
@@ -113,34 +122,34 @@ export default function CreateEdit() {
 								className="border rounded focus-visible:outline-1 px-4 py-2 max-w-xl w-full"
 								value={task.title}
 								onChange={(e) => {
-                                    tasks.editTitle(task, e.target.value);
+									tasks.editTitle(task, e.target.value);
 								}}
 							/>
-                            <p className="mt-2">Status: {task.status}</p>
-                            <button
+							<p className="mt-2">Status: {task.status}</p>
+							<button
 								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2 mt-4"
 								onClick={(e) => {
-                                    e.preventDefault();
-                                    tasks.remove(task)
-                                }}
+									e.preventDefault();
+									tasks.remove(task);
+								}}
 							>
 								Remove
 							</button>
-                            <button
+							<button
 								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
 								onClick={(e) => {
-                                    e.preventDefault();
-                                    tasks.editStatus(task, "COMPLETE")
-                                }}
+									e.preventDefault();
+									tasks.editStatus(task, "COMPLETE");
+								}}
 							>
 								Mark as done
 							</button>
-                            <button
+							<button
 								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
 								onClick={(e) => {
-                                    e.preventDefault();
-                                    tasks.editStatus(task, "INCOMPLETE")
-                                }}
+									e.preventDefault();
+									tasks.editStatus(task, "INCOMPLETE");
+								}}
 							>
 								Mark as todo
 							</button>
@@ -167,9 +176,9 @@ export default function CreateEdit() {
 						<button
 							className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4"
 							onClick={(e) => {
-                                e.preventDefault();
-                                users.add();
-                            }}
+								e.preventDefault();
+								users.add();
+							}}
 						>
 							Add
 						</button>
@@ -186,22 +195,21 @@ export default function CreateEdit() {
 							className="flex flex-row flex-nowrap justify-between items-center mb-4 border max-w-2xl p-4 rounded"
 							key={u.id}
 						>
-							<input 
-                                type="text" 
-                                id={`${u.id}`} 
-                                name={`${u.id}`} 
-                                value={u.email}
-                                onChange={(e) => {
-                                    users.editEmail(u, e.target.value)
-                                }}
-                            >
-                            </input>
+							<input
+								type="text"
+								id={`${u.id}`}
+								name={`${u.id}`}
+								value={u.email}
+								onChange={(e) => {
+									users.editEmail(u, e.target.value);
+								}}
+							></input>
 							<button
 								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2"
 								onClick={(e) => {
-                                    e.preventDefault();
-                                    users.remove(u);
-                                }}
+									e.preventDefault();
+									users.remove(u);
+								}}
 							>
 								Remove
 							</button>
