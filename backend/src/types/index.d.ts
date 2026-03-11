@@ -12,19 +12,19 @@ interface Project {
 	description: string;
 	status: Status;
 	tasks: Task[] | null;
-    comments: ProjectComment[] | null;
+	comments: ProjectComment[] | null;
 	id: string;
 }
 
 interface ProjectComment {
-    title: string,
+	title: string;
 }
 
 interface ProjectMetadata {
-    title: string;
+	title: string;
 	description: string;
 	status: Status;
-    id: string;
+	id: string;
 }
 
 interface User {
@@ -39,8 +39,8 @@ interface SentUserData {
 }
 
 interface DecodedUserData {
-    id: string,
-    email: string,
+	id: string;
+	email: string;
 }
 
 interface HttpError extends Error {

@@ -2,45 +2,43 @@ import pool from "../../config/db.js";
 import addBulkInsertPlaceholders from "../../shared/utils/addBulkInsertPlaceholders.js";
 
 export async function create(task: Task, projectId: string) {
-    await pool?.query(
-        `
+	await pool?.query(
+		`
         INSERT INTO tasks (id, title, status, project_id)
         VALUES ($1, $2, $3, $4);
         `,
-        [task.id, task.title, task.status, projectId]
-    );
+		[task.id, task.title, task.status, projectId],
+	);
 }
 
 export async function createMany(tasks: Task[], projectId: string) {
-    const query = addBulkInsertPlaceholders("INSERT INTO tasks (id, title, status, project_id) VALUES", 4, tasks.length);
-    const data = tasks.flatMap(t => [t.id, t.title, t.status, projectId]);
+	const query = addBulkInsertPlaceholders(
+		"INSERT INTO tasks (id, title, status, project_id) VALUES",
+		4,
+		tasks.length,
+	);
+	const data = tasks.flatMap((t) => [t.id, t.title, t.status, projectId]);
 
-    await pool?.query(
-        query,
-        data
-    );
+	await pool?.query(query, data);
 }
 
 export async function updateById(id: string, newTask: Task) {
-    await pool?.query(
-        `UPDATE tasks SET title = $1, status = $2
+	await pool?.query(
+		`UPDATE tasks SET title = $1, status = $2
         WHERE id = $3;`,
-        [newTask.title, newTask.status, id]
-    );
+		[newTask.title, newTask.status, id],
+	);
 }
 
 export async function deleteById(id: string) {
-    await pool?.query(
-        `DELETE FROM tasks WHERE id = $1;`,
-        [id]
-    );
+	await pool?.query(`DELETE FROM tasks WHERE id = $1;`, [id]);
 }
 
 export async function getAllByProjectId(projectId: string): Promise<Task[]> {
-    const result = await pool?.query(
-        `SELECT title, status, id FROM tasks WHERE project_id = $1;`,
-        [projectId]
-    );
+	const result = await pool?.query(
+		`SELECT title, status, id FROM tasks WHERE project_id = $1;`,
+		[projectId],
+	);
 
-    return result?.rows as Task[];
+	return result?.rows as Task[];
 }

@@ -7,15 +7,15 @@ import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 
 export default function AppRoutes() {
-    return (
-        <Routes>
-            <Route path="/" element={<Root />}>
-                <Route index element={<Home />} />
-                <Route path="project" element={<Project />} />
-                <Route path="create" element={<CreateEdit />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-        </Routes>
-    );
+	return (
+		<Routes>
+			<Route path="/" element={<Root />}>
+				<Route index element={<Home />} />
+				<Route path="project" element={<Project />} />
+				<Route path="create" element={<CreateEdit />} />
+			</Route>
+			<Route path="/login" element={<Login />} />
+			<Route path="*" element={<NotFound />} />
+		</Routes>
+	);
 }

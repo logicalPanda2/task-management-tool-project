@@ -1,20 +1,20 @@
 export default function addBulkInsertPlaceholders(
-    baseQuery: string, 
-    placeholdersPerItem: number, 
-    itemsLength: number
+	baseQuery: string,
+	placeholdersPerItem: number,
+	itemsLength: number,
 ) {
-    const placeholders: string[] = [];
-    const totalPlaceholders = itemsLength * placeholdersPerItem;
-    let placeholder = "";
+	const placeholders: string[] = [];
+	const totalPlaceholders = itemsLength * placeholdersPerItem;
+	let placeholder = "";
 
-    for(let i = 1; i <= totalPlaceholders; i++) {
-        placeholder += `$${i}`;
+	for (let i = 1; i <= totalPlaceholders; i++) {
+		placeholder += `$${i}`;
 
-        if(i % placeholdersPerItem === 0) {
-            placeholders.push(`(${placeholder})`);
-            placeholder = "";
-        }
-    }
+		if (i % placeholdersPerItem === 0) {
+			placeholders.push(`(${placeholder})`);
+			placeholder = "";
+		}
+	}
 
-    return `${baseQuery} ${placeholders.join(",")};`;
+	return `${baseQuery} ${placeholders.join(",")};`;
 }

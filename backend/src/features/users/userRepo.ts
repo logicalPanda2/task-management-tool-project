@@ -30,13 +30,13 @@ export async function createNewUser(
 }
 
 export async function addUserToProject(
-    projectId: string,
-    userId: string,
-    role: UserRole,
+	projectId: string,
+	userId: string,
+	role: UserRole,
 ) {
-    await pool?.query(
-        `INSERT INTO user_projects (project_id, user_id, user_role)
+	await pool?.query(
+		`INSERT INTO user_projects (project_id, user_id, user_role)
         VALUES ($1, $2, $3);`,
-        [projectId, userId, role]
-    );
+		[projectId, userId, role],
+	);
 }

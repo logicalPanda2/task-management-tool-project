@@ -1,25 +1,28 @@
 import pool from "../../config/db.js";
 
-export async function create(comment: ProjectComment, userId: string, projectId: string) {
-    await pool?.query(
-        `INSERT INTO comments (title, project_id, user_id) 
+export async function create(
+	comment: ProjectComment,
+	userId: string,
+	projectId: string,
+) {
+	await pool?.query(
+		`INSERT INTO comments (title, project_id, user_id) 
         VALUES ($1, $2, $3);`,
-        [comment.title, projectId, userId]
-    );
+		[comment.title, projectId, userId],
+	);
 }
 
 export async function deleteById(id: string) {
-    await pool?.query(
-        `DELETE FROM comments WHERE id = $1;`,
-        [id]
-    );
+	await pool?.query(`DELETE FROM comments WHERE id = $1;`, [id]);
 }
 
-export async function getAllByProjectId(projectId: string): Promise<ProjectComment[]> {
-    const result = await pool?.query(
-        `SELECT title, id FROM comments WHERE project_id = $1;`,
-        [projectId]
-    );
+export async function getAllByProjectId(
+	projectId: string,
+): Promise<ProjectComment[]> {
+	const result = await pool?.query(
+		`SELECT title, id FROM comments WHERE project_id = $1;`,
+		[projectId],
+	);
 
-    return result?.rows as ProjectComment[];
+	return result?.rows as ProjectComment[];
 }

@@ -5,32 +5,32 @@ import {
 	renewAccessToken,
 	verifyRefreshToken,
 	verifyUserCredentials,
-    userDoesNotExist,
+	userDoesNotExist,
 } from "./authService.js";
 import * as userRepo from "../users/userRepo.js";
 import hashPassword from "../../shared/utils/hashPassword.js";
 
 export async function register(
-    req: Request,
+	req: Request,
 	res: Response,
 	next: (...args: any[]) => any,
 ) {
-    try {
-        const { email, password } = req.body;
-        const doesNotExist = await userDoesNotExist(email);
+	try {
+		const { email, password } = req.body;
+		const doesNotExist = await userDoesNotExist(email);
 
-        if(!doesNotExist) return res.sendStatus(204); // 204 to not expose internal user emails
+		if (!doesNotExist) return res.sendStatus(204); // 204 to not expose internal user emails
 
-        const hashed = await hashPassword(password);
-        
-        await userRepo.createNewUser(email, hashed);
+		const hashed = await hashPassword(password);
 
-        return res.sendStatus(200);
-    } catch(e) {
-        next(e);
-    }
+		await userRepo.createNewUser(email, hashed);
 
-    return undefined;
+		return res.sendStatus(200);
+	} catch (e) {
+		next(e);
+	}
+
+	return undefined;
 }
 
 export async function login(
@@ -71,8 +71,8 @@ export async function refresh(
 		const refreshToken = req.cookies?.refreshToken;
 		if (!refreshToken) return res.sendStatus(401);
 
-        const decodedUserData = verifyRefreshToken(refreshToken);
-        if(!decodedUserData) return res.sendStatus(401);
+		const decodedUserData = verifyRefreshToken(refreshToken);
+		if (!decodedUserData) return res.sendStatus(401);
 
 		const accessToken = await renewAccessToken(decodedUserData);
 		if (!accessToken) return res.sendStatus(403);
