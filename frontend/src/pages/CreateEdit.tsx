@@ -1,4 +1,5 @@
 import useEditing from "../hooks/useEditing";
+import useTasks from "../hooks/useTasks";
 
 export default function CreateEdit() {
 	const {
@@ -6,52 +7,20 @@ export default function CreateEdit() {
         titleErr, setTitleErr,
         description, setDescription,
         descriptionErr, setDescriptionErr,
-        tasks, setTasks,
-        taskErr, setTaskErr,
         userEmail, setUserEmail,
         userCounter, setUserCounter,
         userErr, setUserErr,
         userEmails, setUserEmails
     } = useEditing();
-
-	const addNewTask = (
-		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-	): void => {
-		e.preventDefault();
-		setTaskErr("");
-
-		const newTask: Task = {
-			title: `Task ${tasks.length + 1}`,
-			status: "INCOMPLETE",
-			id: crypto.randomUUID(),
-		};
-
-		setTasks([...tasks, newTask]);
-	};
-
-    const editTaskStatus = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        task: Task,
-        status: Status,
-    ): void => {
-        e.preventDefault();
-        setTaskErr("");
-
-        setTasks([...tasks.map(t => t.id === task.id ? {
-            ...task,
-            status: status,
-        } : t)]);
-    }
-
-    const removeTask = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        task: Task
-    ): void => {
-        e.preventDefault();
-        setTaskErr("");
-
-        setTasks([...tasks.filter(t => t.id !== task.id)]);
-    }
+    const {
+        add, 
+        editStatus,
+        remove,
+        taskErr,
+        tasks,
+        setTaskErr,
+        setTasks
+    } = useTasks();
 
 	const addUser = (
 		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -167,7 +136,10 @@ export default function CreateEdit() {
 				</header>
 				<button
 					className="bg-black rounded text-white px-3 py-1.5 focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 transition mb-4"
-					onClick={(e) => addNewTask(e)}
+					onClick={(e) => {
+                        e.preventDefault();
+                        add()
+                    }}
 				>
 					Add task
 				</button>
@@ -205,19 +177,28 @@ export default function CreateEdit() {
                             <p className="mt-2">Status: {task.status}</p>
                             <button
 								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2 mt-4"
-								onClick={(e) => removeTask(e, task)}
+								onClick={(e) => {
+                                    e.preventDefault();
+                                    remove(task)
+                                }}
 							>
 								Remove
 							</button>
                             <button
 								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
-								onClick={(e) => editTaskStatus(e, task, "COMPLETE")}
+								onClick={(e) => {
+                                    e.preventDefault();
+                                    editStatus(task, "COMPLETE")
+                                }}
 							>
 								Mark as done
 							</button>
                             <button
 								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
-								onClick={(e) => editTaskStatus(e, task, "INCOMPLETE")}
+								onClick={(e) => {
+                                    e.preventDefault();
+                                    editStatus(task, "INCOMPLETE")
+                                }}
 							>
 								Mark as todo
 							</button>
