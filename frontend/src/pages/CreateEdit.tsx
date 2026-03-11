@@ -18,6 +18,7 @@ export default function CreateEdit() {
 
     const addNewTask = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         e.preventDefault();
+        setTaskErr("");
 
         const newTask: Task = {
             title: `Task ${tasks.length + 1}`,
@@ -67,6 +68,8 @@ export default function CreateEdit() {
         setDescriptionErr("");
         setTaskErr("");
         setUserErr("");
+
+        if(!tasks.length) setTaskErr("A project must have at least one task");
 
         if(!title.trim()) setTitleErr("Cannot be empty");
         if(!description.trim()) setDescriptionErr("Cannot be empty");
