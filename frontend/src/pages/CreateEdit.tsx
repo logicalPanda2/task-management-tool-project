@@ -38,6 +38,11 @@ export default function CreateEdit() {
             return;
         }
 
+        if(!userEmail.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+            setUserErr("Invalid email pattern");
+            return;
+        }
+
         setUserEmails([
             ...userEmails,
             {
