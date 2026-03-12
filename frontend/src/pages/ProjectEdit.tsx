@@ -35,6 +35,10 @@ export default function ProjectEdit() {
 					`All tasks must have a title. Check Task ${i + 1}`,
 				);
 		});
+        members.emails.forEach((m, i) => {
+            if(!m.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
+                formData.setEmailFieldErr(`All member emails must have a valid pattern. Check email ${i + 1}`);
+        });
 
 		if (formData.titleErr || formData.descriptionErr || formData.taskFieldErr) {
 			return false;
@@ -59,7 +63,10 @@ export default function ProjectEdit() {
 						placeholder="Title"
 						className="border rounded focus-visible:outline-1 px-4 py-2"
 						value={formData.title}
-						onChange={(e) => formData.setTitle(e.target.value)}
+						onChange={(e) => {
+                            formData.setTitleErr("");
+                            formData.setTitle(e.target.value)
+                        }}
 					/>
 					{formData.titleErr && (
 						<span className="mt-1 text-red-600">{formData.titleErr}</span>
@@ -75,7 +82,10 @@ export default function ProjectEdit() {
 						placeholder="Description"
 						className="border rounded focus-visible:outline-1 px-4 py-2"
 						value={formData.description}
-						onChange={(e) => formData.setDescription(e.target.value)}
+						onChange={(e) => {
+                            formData.setDescriptionErr("");
+                            formData.setDescription(e.target.value)
+                        }}
 					/>
 					{formData.descriptionErr && (
 						<span className="mt-1 text-red-600">
@@ -92,6 +102,7 @@ export default function ProjectEdit() {
 					className="bg-black rounded text-white px-3 py-1.5 focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 transition mb-4"
 					onClick={(e) => {
 						e.preventDefault();
+                        formData.setTaskFieldErr("");
 						tasks.add();
 					}}
 				>
@@ -118,6 +129,7 @@ export default function ProjectEdit() {
 								className="border rounded focus-visible:outline-1 px-4 py-2 max-w-xl w-full"
 								value={task.title}
 								onChange={(e) => {
+                                    formData.setTaskFieldErr("");
 									tasks.editTitle(task, e.target.value);
 								}}
 							/>
@@ -155,7 +167,7 @@ export default function ProjectEdit() {
 			</section>
 			<section className="mb-6">
 				<header>
-					<h2 className="text-2xl mb-4">Users</h2>
+					<h2 className="text-2xl mb-4">Members</h2>
 				</header>
 				<div>
 					<div className="flex flex-row flex-nowrap items-center mb-4">
@@ -173,7 +185,19 @@ export default function ProjectEdit() {
 							className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4"
 							onClick={(e) => {
 								e.preventDefault();
+                                formData.setEmailFieldErr("");
+                                if (!formData.emailField.trim()) {
+                                    formData.setEmailFieldErr("Cannot be empty");
+                                    return;
+                                }
+                                if (
+                                    !formData.emailField.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+                                ) {
+                                    formData.setEmailFieldErr("Invalid email pattern");
+                                    return;
+                                }
 								members.add(formData.emailField);
+                                formData.setEmailField("");
 							}}
 						>
 							Add
@@ -197,6 +221,13 @@ export default function ProjectEdit() {
 								name={`${u.id}`}
 								value={u.email}
 								onChange={(e) => {
+                                    e.preventDefault();
+                                    formData.setEmailFieldErr("");
+                                    if (
+                                        !e.target.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+                                    ) {
+                                        formData.setEmailFieldErr("All member emails must have a valid email pattern.");
+                                    }
 									members.edit(u, e.target.value);
 								}}
 							></input>
