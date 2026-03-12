@@ -73,6 +73,7 @@
 @utility text-danger { color: var(--danger); }
 @utility text-danger-dark { color: var(--danger-dark); }
 @utility text-success { color: var(--success); }
+@utility bg-text-success { background-color: var(--success); }
 
 @utility shadow-default {
     box-shadow: var(--shadow-default);
