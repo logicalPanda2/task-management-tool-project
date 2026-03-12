@@ -21,7 +21,6 @@ export default function Login() {
 							type="text"
 							name="email"
 							id="emailInput"
-							placeholder="Email"
 							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-default focus-visible:shadow-pressed focus-visible:outline-0 transition-custom-all"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -35,7 +34,6 @@ export default function Login() {
 							type="password"
 							name="password"
 							id="passwordInput"
-							placeholder="Password"
 							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-default focus-visible:shadow-pressed focus-visible:outline-0 transition-custom-all"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
