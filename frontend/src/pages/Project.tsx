@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useTasks from "../hooks/useTasks";
 
 export default function Project() {
 	const placeholderProject = {
@@ -8,7 +9,7 @@ export default function Project() {
 		status: "INCOMPLETE",
 		id: crypto.randomUUID(),
 	};
-    const [tasks, setTasks] = useState<Task[]>([
+    const tasks = useTasks([
         {
             title: "Task 1",
             status: "INCOMPLETE",
@@ -25,6 +26,7 @@ export default function Project() {
             id: crypto.randomUUID(),
         },
     ]);
+
 	const [comments, setComments] = useState<ProjectComment[]>([
 		{
 			user: "User 1",
@@ -38,39 +40,6 @@ export default function Project() {
 		},
 	]);
 	const [comment, setComment] = useState<string>("");
-
-	const markTaskAsComplete = (task: Task): void => {
-		const taskStatus: Status = "COMPLETE";
-		if (!tasks) return;
-
-		const target = tasks.find((t) => t.id === task.id);
-
-		if (!target)
-			throw new Error("Cannot mark as complete; task not found.");
-
-		const newTask = {
-			...target,
-			status: taskStatus,
-		};
-
-		setTasks([...tasks.map((t) => (t.id === task.id ? newTask : t))]);
-	};
-
-	const markTaskAsIncomplete = (task: Task): void => {
-		const taskStatus: Status = "INCOMPLETE";
-		if (!tasks) return;
-		const target = tasks.find((t) => t.id === task.id);
-
-		if (!target)
-			throw new Error("Cannot mark as incomplete; task not found.");
-
-		const newTask = {
-			...target,
-			status: taskStatus,
-		};
-
-		setTasks([...tasks.map((t) => (t.id === task.id ? newTask : t))]);
-	};
 
 	const postComment = (): void => {
 		setComments([
@@ -114,8 +83,8 @@ export default function Project() {
 						<h2 className="text-3xl mb-4">Tasks</h2>
 					</header>
 					{tasks &&
-					tasks.length > 0 ? (
-						tasks.map((task) => (
+					tasks.tasks.length > 0 ? (
+						tasks.tasks.map((task) => (
 							<div
 								className="flex flex-row justify-between items-center relative mb-4 border max-w-2xl p-4 rounded"
 								key={task.id}
@@ -124,7 +93,7 @@ export default function Project() {
 								{task.status === "INCOMPLETE" ? (
 									<button
 										className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800"
-										onClick={() => markTaskAsComplete(task)}
+										onClick={() => tasks.editStatus(task, "COMPLETE")}
 									>
 										Mark as done
 									</button>
@@ -136,7 +105,7 @@ export default function Project() {
 										<button
 											className="mr-2 px-2 py-0.5 bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800"
 											onClick={() =>
-												markTaskAsIncomplete(task)
+												tasks.editStatus(task, "INCOMPLETE")
 											}
 										>
 											Revert
