@@ -15,7 +15,7 @@ export default function Home() {
 	return projects.length > 0 ? (
 		projects.map((project) => (
 			<div
-				className="min-w-80 max-w-xl md:w-4/5 mb-6 p-6 shadow-bold rounded-2xl relative"
+				className="min-w-80 max-w-xl md:w-4/5 mb-6 p-6 shadow-bold rounded-2xl relative hover:shadow-bold-hover transition-custom-all"
 				key={project.title}
 			>
                 <div className="flex flex-row justify-between items-center flex-nowrap mb-3">

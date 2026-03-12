@@ -45,6 +45,8 @@
         inset 0px 0px 0px var(--shadow-light);
     --shadow-bold: 1px 1px 2px var(--shadow-dark),
         -3px -3px 2px var(--shadow-light);
+    --shadow-bold-hover: 3px 3px 4px var(--shadow-dark),
+        -3px -3px 4px var(--shadow-light);
     --shadow-pressed: 
         0px 0px 0px var(--shadow-dark),
         0px 0px 0px var(--shadow-light),
@@ -76,37 +78,21 @@
 @utility text-success { color: var(--success); }
 @utility bg-text-success { background-color: var(--success); }
 
-@utility shadow-default {
-    box-shadow: var(--shadow-default);
-}
-@utility shadow-bold {
-    box-shadow: var(--shadow-bold);
-}
-@utility shadow-pressed {
-    box-shadow: var(--shadow-pressed);
-}
-@utility shadow-default-dark {
-    box-shadow: var(--shadow-default-dark);
-}
-@utility shadow-hover-dark {
-    box-shadow: var(--shadow-hover-dark);
-}
+@utility shadow-default { box-shadow: var(--shadow-default); }
+@utility shadow-bold { box-shadow: var(--shadow-bold); }
+@utility shadow-bold-hover { box-shadow: var(--shadow-bold-hover); }
+@utility shadow-pressed { box-shadow: var(--shadow-pressed); }
+@utility shadow-default-dark { box-shadow: var(--shadow-default-dark); }
+@utility shadow-hover-dark { box-shadow: var(--shadow-hover-dark); }
 
-@utility bg-gradient { 
-    background: linear-gradient(var(--angle), var(--sheen-light) 0%, var(--sheen-dark) 100%);
-}
-@utility bg-gradient-pressed {
-    --angle: 350deg;
-}
-
-@utility bg-gradient-dark {
-    background: linear-gradient(var(--angle), var(--bg-dark) var(--percent), var(--bg-black) var(--percent-2));
-}
+@utility bg-gradient { background: linear-gradient(var(--angle), var(--sheen-light) 0%, var(--sheen-dark) 100%); }
+@utility bg-gradient-pressed { --angle: 350deg; }
+@utility bg-gradient-dark { background: linear-gradient(var(--angle), var(--bg-dark) var(--percent), var(--bg-black) var(--percent-2)); }
 @utility bg-gradient-dark-pressed {
     --percent: 35%;
     --percent-2: 120%;
 }
 
 @utility transition-custom-all {
-    transition: box-shadow 160ms ease, transform 120ms ease, color 120ms ease, --angle 60ms ease, --percent 200ms ease, --percent-2 200ms ease;
+    transition: box-shadow 220ms ease, transform 120ms ease, color 120ms ease, --angle 60ms ease, --percent 200ms ease, --percent-2 200ms ease;
 }
