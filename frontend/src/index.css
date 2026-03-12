@@ -30,10 +30,14 @@
 
     --shadow-default: 
         1px 1px 2px var(--shadow-dark),
-        -1px -1px 2px var(--shadow-light);
+        -1px -1px 2px var(--shadow-light),
+        inset 0px 0px 0px var(--shadow-dark),
+        inset 0px 0px 0px var(--shadow-light);
     --shadow-pressed: 
-        inset 1px 1px 2px 0 var(--shadow-dark),
-        inset -1px -1px 2px 0 var(--shadow-light);
+        0px 0px 0px var(--shadow-dark),
+        0px 0px 0px var(--shadow-light),
+        inset 2px 2px 4px var(--shadow-dark),
+        inset -2px -2px 4px var(--shadow-light);
 
     --sheen-light: oklch(96.996% 0.00298 264.793);
     --sheen-dark:  oklch(90.326% 0.00596 264.652);
@@ -52,15 +56,21 @@
 @utility text-danger-dark { color: var(--danger-dark); }
 @utility text-success { color: var(--success); }
 
-@utility shadow-default { box-shadow: var(--shadow-default); }
-@utility shadow-pressed { box-shadow: var(--shadow-pressed); }
+@utility shadow-default {
+    box-shadow: var(--shadow-default);
+}
+@utility shadow-pressed {
+    box-shadow: var(--shadow-pressed);
+}
 
 @utility bg-gradient { 
     background: linear-gradient(var(--angle), var(--sheen-light) 0%, var(--sheen-dark) 100%);
-    transition: box-shadow 160ms ease, transform 120ms ease, color 120ms ease, --angle 50ms ease;
 }
 
 @utility bg-gradient-dark {
     background: linear-gradient(var(--angle), var(--bg-dark) 0%, var(--bg-black) 100%);
+}
+
+@utility transition-custom-all {
     transition: box-shadow 160ms ease, transform 120ms ease, color 120ms ease, --angle 50ms ease;
 }
