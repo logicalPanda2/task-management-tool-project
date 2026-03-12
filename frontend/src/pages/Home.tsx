@@ -5,7 +5,7 @@ export default function Home() {
 		{
 			title: "Placeholder project",
 			description:
-				"this is just a placeholder, folks. Lorem ipsum dolor sit amet consectetur adipiscing elit.",
+				"this is just a placeholder, folks. Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit. Longer description, act like this is important. This is definitely important.",
 			status: "INCOMPLETE",
 			id: crypto.randomUUID(),
 		},
@@ -15,24 +15,19 @@ export default function Home() {
 	return projects.length > 0 ? (
 		projects.map((project) => (
 			<div
-				className="max-w-2xl md:w-4/5 mb-6 p-6 border rounded-lg relative"
+				className="max-w-2xl md:w-4/5 mb-6 p-6 shadow-bold rounded-lg relative"
 				key={project.title}
 			>
-				<p className="text-2xl mb-2">{project.title}</p>
-				<p className="mb-1">{project.description}</p>
-				<p className="mb-6">
-					This project is{" "}
-					<span className="font-semibold">
-						{project.status.toLowerCase()}
-					</span>
-					.
-				</p>
-				<Link
-					to={`project/${project.id}`}
-					className="bg-black text-white rounded focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 px-3 py-1"
-				>
-					View
-				</Link>
+				<p className="text-2xl font-semibold mb-2 text-primary">{project.title}</p>
+				<p className="mb-6 text-secondary">{project.description}</p>
+                <div className="hover:transform-[translateY(-1px)] transition-custom-all w-fit">
+                    <Link
+                        to={`project/${project.id}`}
+                        className="bg-gradient shadow-default text-primary px-4 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-secondary"
+                    >
+                        View
+                    </Link>
+                </div>
 			</div>
 		))
 	) : (
