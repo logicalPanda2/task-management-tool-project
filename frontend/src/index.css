@@ -5,6 +5,16 @@
     inherits: false;
     initial-value: 170deg;
 }
+@property --percent {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+@property --percent-2 {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 100%;
+}
 
 *, 
 *::before, 
@@ -38,10 +48,16 @@
         0px 0px 0px var(--shadow-light),
         inset 2px 2px 4px var(--shadow-dark),
         inset -2px -2px 4px var(--shadow-light);
+    --shadow-default-dark: 
+        1px 1px 2px var(--bg-dark);
+    --shadow-hover-dark:
+        1px 1px 6px var(--bg-dark); 
 
     --sheen-light: oklch(96.996% 0.00298 264.793);
     --sheen-dark:  oklch(90.326% 0.00596 264.652);
-    --angle:       170deg;
+    --angle: 170deg;
+    --percent: 0%;
+    --percent-2: 100%;
 }
 
 @utility bg-default { background-color: var(--bg-default); }
@@ -62,15 +78,25 @@
 @utility shadow-pressed {
     box-shadow: var(--shadow-pressed);
 }
+@utility shadow-default-dark {
+    box-shadow: var(--shadow-default-dark);
+}
+@utility shadow-hover-dark {
+    box-shadow: var(--shadow-hover-dark);
+}
 
 @utility bg-gradient { 
     background: linear-gradient(var(--angle), var(--sheen-light) 0%, var(--sheen-dark) 100%);
 }
 
 @utility bg-gradient-dark {
-    background: linear-gradient(var(--angle), var(--bg-dark) 0%, var(--bg-black) 100%);
+    background: linear-gradient(var(--angle), var(--bg-dark) var(--percent), var(--bg-black) var(--percent-2));
+}
+@utility bg-gradient-dark-pressed {
+    --percent: 15%;
+    --percent-2: 100%;
 }
 
 @utility transition-custom-all {
-    transition: box-shadow 160ms ease, transform 120ms ease, color 120ms ease, --angle 50ms ease;
+    transition: box-shadow 160ms ease, transform 120ms ease, color 120ms ease, --angle 50ms ease, --percent 200ms ease, --percent-2 200ms ease;
 }
