@@ -5,8 +5,13 @@ CREATE TYPE project_task_status AS ENUM (
     'INCOMPLETE'
 );
 
+CREATE TYPE user_role AS ENUM (
+    'CREATOR',
+    'CONTRIBUTOR'
+);
+
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) NOT NULL UNIQUE,
     password TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
@@ -21,9 +26,9 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE user_projects (
-    user_id INTEGER NOT NULL,
+    user_id UUID NOT NULL,
     project_id UUID NOT NULL,
-    user_role VARCHAR(100) NOT NULL,
+    user_role user_role NOT NULL,
 
     PRIMARY KEY (user_id, project_id),
 
@@ -49,9 +54,9 @@ CREATE TABLE tasks (
 );
 
 CREATE TABLE comments (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title VARCHAR(255) NOT NULL,
-    user_id INTEGER NOT NULL,
+    user_id UUID NOT NULL,
     project_id UUID NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
 
