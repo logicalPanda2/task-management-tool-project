@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Root from "./../layouts/Root";
 import Login from "./../pages/Login";
-import Project from "../pages/Project";
-import CreateEdit from "../pages/CreateEdit";
+import ProjectView from "../pages/ProjectView";
+import ProjectEdit from "../pages/ProjectEdit";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 
@@ -11,10 +11,11 @@ export default function AppRoutes() {
 		<Routes>
 			<Route path="/" element={<Root />}>
 				<Route index element={<Home />} />
-				<Route path="project" element={<Project />} />
-				<Route path="create" element={<CreateEdit />} />
+				<Route path="project/:id" element={<ProjectView />} />
+                <Route path="project/:id/edit" element={<ProjectEdit />} />
 			</Route>
 			<Route path="/login" element={<Login />} />
+            <Route path="/404" element={<NotFound />} /> 
 			<Route path="*" element={<NotFound />} />
 		</Routes>
 	);
