@@ -30,7 +30,7 @@
     --shadow-dark: oklch(83.162% 0.00657 255.711);
     --shadow-light: oklch(95.514% 0.00011 271.152);
     --text-primary: oklch(30.117% 0.00947 268.373);
-    --text-secondary: oklch(54.132% 0.01488 266.636);
+    --text-secondary: oklch(44.568% 0.0121 267.267);
     --text-light: oklch(95.157% 0.00878 264.61);
     --accent: oklch(62.505% 0.20107 266.356);
     --accent-dark: oklch(53.312% 0.18149 265.856);
@@ -43,6 +43,8 @@
         -1px -1px 2px var(--shadow-light),
         inset 0px 0px 0px var(--shadow-dark),
         inset 0px 0px 0px var(--shadow-light);
+    --shadow-bold: 1px 1px 2px var(--shadow-dark),
+        -3px -3px 2px var(--shadow-light);
     --shadow-pressed: 
         0px 0px 0px var(--shadow-dark),
         0px 0px 0px var(--shadow-light),
@@ -74,6 +76,9 @@
 
 @utility shadow-default {
     box-shadow: var(--shadow-default);
+}
+@utility shadow-bold {
+    box-shadow: var(--shadow-bold);
 }
 @utility shadow-pressed {
     box-shadow: var(--shadow-pressed);
