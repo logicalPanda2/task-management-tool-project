@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import { useState } from "react";
 import useTasks from "../hooks/useTasks";
@@ -164,12 +164,9 @@ export default function ProjectView() {
 						</button>
 					</div>
 				</section>
-				<button className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1.5 px-4 mr-4 transition">
+				<Link className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1.5 px-4 mr-4 transition" to={"edit"}>
 					Edit Project
-				</button>
-				<button className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 py-1.5 px-4 transition">
-					Delete Project
-				</button>
+				</Link>
 			</article>
 		</>
 	);
