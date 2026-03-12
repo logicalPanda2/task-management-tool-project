@@ -5,6 +5,10 @@ export default function useFormData(initialTitle: string = "", initialDescriptio
 	const [titleErr, setTitleErr] = useState<string>("");
 	const [description, setDescription] = useState<string>(initialDescription);
 	const [descriptionErr, setDescriptionErr] = useState<string>("");
+    const [taskField, setTaskField] = useState<string>("");
+    const [emailField, setEmailField] = useState<string>("");
+    const [taskFieldErr, setTaskFieldErr] = useState<string>("");
+    const [emailFieldErr, setEmailFieldErr] = useState<string>("");
 
 	return {
 		title,
@@ -15,5 +19,13 @@ export default function useFormData(initialTitle: string = "", initialDescriptio
 		setDescription,
 		descriptionErr,
 		setDescriptionErr,
+        taskField,
+        setTaskField,
+        emailField, 
+        setEmailField,
+        taskFieldErr, 
+        setTaskFieldErr,
+        emailFieldErr, 
+        setEmailFieldErr,
 	};
 }
