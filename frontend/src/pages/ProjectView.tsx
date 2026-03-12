@@ -48,6 +48,13 @@ export default function ProjectView() {
 	]);
 	const [commentField, setCommentField] = useState<string>("");
 
+    const postComment = (userEmail: string, content: string): void => {
+        if(!commentField.trim()) return;
+        
+        comments.post(userEmail, content);
+        setCommentField("");
+    }
+
 	return (
 		<>
 			<article>
@@ -151,10 +158,7 @@ export default function ProjectView() {
 						/>
 						<button
 							className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4"
-							onClick={() => {
-                                comments.post("User 1", commentField);
-                                setCommentField("");
-                            }}
+							onClick={() => postComment("placeholderEmail", commentField)}
 						>
 							Post
 						</button>
