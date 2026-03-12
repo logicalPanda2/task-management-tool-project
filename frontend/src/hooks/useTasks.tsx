@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function useTasks(initial: Task[] = []) {
-	const [tasks, setTasks] = useState<Task[]>(initial);
+	const [list, setList] = useState<Task[]>(initial);
 	const [taskErr, setTaskErr] = useState<string>("");
 
 	const add = (): void => {
@@ -13,14 +13,14 @@ export default function useTasks(initial: Task[] = []) {
 			id: crypto.randomUUID(),
 		};
 
-		setTasks([...tasks, newTask]);
+		setList([...list, newTask]);
 	};
 
 	const editStatus = (task: Task, status: Status): void => {
 		setTaskErr("");
 
-		setTasks([
-			...tasks.map((t) =>
+		setList([
+			...list.map((t) =>
 				t.id === task.id
 					? {
 							...task,
@@ -32,8 +32,8 @@ export default function useTasks(initial: Task[] = []) {
 	};
 
 	const editTitle = (task: Task, title: string): void => {
-		setTasks([
-			...tasks.map((t) =>
+		setList([
+			...list.map((t) =>
 				t.id === task.id
 					? {
 							...task,
@@ -47,7 +47,7 @@ export default function useTasks(initial: Task[] = []) {
 	const remove = (task: Task): void => {
 		setTaskErr("");
 
-		setTasks([...tasks.filter((t) => t.id !== task.id)]);
+		setList([...list.filter((t) => t.id !== task.id)]);
 	};
 
 	return {
@@ -57,7 +57,6 @@ export default function useTasks(initial: Task[] = []) {
 		remove,
 		taskErr,
 		setTaskErr,
-		tasks,
-		setTasks,
+		list,
 	};
 }
