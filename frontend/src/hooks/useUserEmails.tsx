@@ -1,47 +1,47 @@
 import { useState } from "react";
 
-export default function useUserEmails() {
-	const [userEmail, setUserEmail] = useState<string>("");
-	const [userCounter, setUserCounter] = useState<number>(0);
-	const [userErr, setUserErr] = useState<string>("");
-	const [userEmails, setUserEmails] = useState<User[]>([]);
+export default function useMembers(initialEmails: User[] = [], memberCount: number = 0) {
+	const [emailField, setEmailField] = useState<string>("");
+	const [count, setCount] = useState<number>(memberCount);
+	const [emailFieldErr, setEmailFieldErr] = useState<string>("");
+	const [emails, setEmails] = useState<User[]>(initialEmails);
 
 	const add = (): void => {
-		setUserErr("");
+		setEmailFieldErr("");
 
-		if (!userEmail.trim()) {
-			setUserErr("Cannot be empty");
+		if (!emailField.trim()) {
+			setEmailFieldErr("Cannot be empty");
 			return;
 		}
 
 		if (
-			!userEmail.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+			!emailField.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
 		) {
-			setUserErr("Invalid email pattern");
+			setEmailFieldErr("Invalid email pattern");
 			return;
 		}
 
-		setUserEmails([
-			...userEmails,
+		setEmails([
+			...emails,
 			{
-				email: userEmail,
-				id: userCounter,
+				email: emailField,
+				id: count,
 			},
 		]);
 
-		setUserEmail("");
-		setUserCounter((c) => c + 1);
+		setEmailField("");
+		setCount((c) => c + 1);
 	};
 
-	const editEmail = (user: User, email: string): void => {
-		setUserErr("");
+	const edit = (user: User, email: string): void => {
+		setEmailFieldErr("");
 
 		if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
-			setUserErr("Invalid email pattern");
+			setEmailFieldErr("Invalid email pattern");
 		}
 
-		setUserEmails([
-			...userEmails.map((u) =>
+		setEmails([
+			...emails.map((u) =>
 				u.id === user.id
 					? {
 							...user,
@@ -53,17 +53,17 @@ export default function useUserEmails() {
 	};
 
 	const remove = (user: User): void => {
-		setUserEmails([...userEmails.filter((u) => u.id !== user.id)]);
+		setEmails([...emails.filter((u) => u.id !== user.id)]);
 	};
 
 	return {
-		userEmail,
-		setUserEmail,
-		userEmails,
-		userErr,
-		setUserErr,
+		emailField,
+		setEmailField,
+		emailFieldErr,
+		setEmailFieldErr,
 		add,
-		editEmail,
+		edit,
 		remove,
+        emails,
 	};
 }
