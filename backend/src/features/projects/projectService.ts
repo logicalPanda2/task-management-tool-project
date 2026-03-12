@@ -3,7 +3,11 @@ import * as taskRepo from "./../tasks/taskRepo.js";
 import * as commentRepo from "./../comments/commentRepo.js";
 import * as userRepo from "./../users/userRepo.js";
 
-export async function getFullProjectData(id: string): Promise<Project | null> {
+export async function getFullProjectData(id: string): Promise<{
+    metadata: ProjectMetadata,
+    comments: ProjectComment[] | null,
+    tasks: Task[] | null,
+}> {
 	const metadata = await projectRepo.getById(id);
 	if (!metadata) throw new Error("Invalid Project ID");
 
@@ -11,10 +15,11 @@ export async function getFullProjectData(id: string): Promise<Project | null> {
 	const comments: ProjectComment[] = await commentRepo.getAllByProjectId(id);
 
 	return {
-		...metadata,
+		metadata: {
+            ...metadata,
+        },
 		comments: comments && comments.length !== 0 ? [...comments] : null,
 		tasks: tasks && tasks.length !== 0 ? [...tasks] : null,
-		id: id,
 	};
 }
 

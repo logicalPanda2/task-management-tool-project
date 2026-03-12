@@ -41,9 +41,7 @@ export async function getById(
 
 		const project = await Services.getFullProjectData(id);
 
-		return res.json({
-			project: project,
-		});
+		return res.json({ project });
 	} catch (e) {
 		next(e);
 	}
