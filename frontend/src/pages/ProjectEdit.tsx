@@ -40,7 +40,12 @@ export default function ProjectEdit() {
                 formData.setEmailFieldErr(`All member emails must have a valid pattern. Check email ${i + 1}`);
         });
 
-		if (formData.titleErr || formData.descriptionErr || formData.taskFieldErr) {
+		if (
+            formData.titleErr || 
+            formData.descriptionErr || 
+            formData.taskFieldErr ||
+            formData.emailFieldErr
+        ) {
 			return false;
 		}
 
