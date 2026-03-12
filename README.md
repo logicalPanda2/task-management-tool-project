@@ -32,28 +32,9 @@ TBA
 - TypeScript
 
 ## TODO
-
-### Extraction and refactors
-1. Extract task hooks in home page
-2. Extract reusable components: buttons, inputs, forms, cards, rows, etc.
-3. Do a final type check pass for both frontend and backend
-
-### Integration
-4. Integrate API with frontend:
-    1. Add all project fetches for homepage
-    2. Navigate to Project/:id for project click on homepage
-    3. Navigate to CreateEdit/:id for edit button click
-    4. Send data to API at creation
-    5. Auth
-
-### UI polish
-5. Completely rework design and choose a consistent theme
-6. Add shadows, transitions and other details for additional polish 
-
-### UX polish
-7. Add confirmation dialog box for deletion
-8. Add soft deletion and undo toasts for all delete actions
-9. Various other small details I most likely have missed but will find out in the process of building &semi;&rpar;
+1. integrate frontend with backend
+2. rework design with neumorphic style
+3. add soft deletion with toasts and confirmation dialogs
 
 ## License
 <a href="./LICENSE.txt">MIT License</a>
