@@ -1,6 +1,8 @@
 import useFormData from "../hooks/useFormData";
 import useTasks from "../hooks/useTasks";
 import useMembers from "../hooks/useMembers";
+import { useEffect } from "react";
+import validateEmail from "../utils/validateEmail";
 // import { useParams } from "react-router-dom";
 
 export default function ProjectEdit() {
@@ -29,18 +31,53 @@ export default function ProjectEdit() {
 
 		if (!tasks.list.length)
 			formData.setTaskFieldErr("A project must have at least one task");
-
 		if (!formData.title.trim()) formData.setTitleErr("Cannot be empty");
 		if (!formData.description.trim()) formData.setDescriptionErr("Cannot be empty");
+
+        const _errString1 = "Title of task";
+        const _errArray: string[] = [];
+        const _errString3 = "cannot be empty";
 		tasks.list.forEach((t, i) => {
 			if (!t.title.trim())
-				formData.setTaskFieldErr(
-					`All tasks must have a title. Check Task ${i + 1}`,
-				);
+				_errArray.push(`${i + 1}`);
+
+            if(i === tasks.list.length - 1 && _errArray.length) {
+                switch(_errArray.length) {
+                    case 1:
+                        formData.setTaskFieldErr(`${_errString1} ${_errArray[0]} ${_errString3}`);
+                        break;
+                    case 2:
+                        formData.setTaskFieldErr(`${_errString1} ${_errArray[0]} and ${_errArray[1]} ${_errString3}`);
+                        break;
+                    default:
+                        formData.setTaskFieldErr(
+                            `${_errString1} ${_errArray.slice(0, _errArray.length - 1).join(", ").concat(` and ${_errArray[_errArray.length - 1]}`)} ${_errString3}`
+                        );
+                }
+            }
 		});
+
+        const errString1 = "Email";
+        const errArray: string[] = [];
+        const errString3 = "has an invalid pattern";
         members.emails.forEach((m, i) => {
-            if(!m.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/))
-                formData.setEmailFieldErr(`All member emails must have a valid pattern. Check email ${i + 1}`);
+            if(!validateEmail(m.email))
+                errArray.push(`${i + 1}`);
+
+            if(i === members.emails.length - 1 && errArray.length) {
+                switch(errArray.length) {
+                    case 1: 
+                        formData.setEmailFieldErr(`${errString1} ${errArray[0]} ${errString3}`);
+                        break;
+                    case 2:
+                        formData.setEmailFieldErr(`${errString1} ${errArray[0]} and ${errArray[1]} ${errString3}`);
+                        break;
+                    default:
+                        formData.setEmailFieldErr(
+                            `${errString1} ${errArray.slice(0, errArray.length - 1).join(", ").concat(` and ${errArray[errArray.length - 1]}`)} ${errString3}`
+                        );
+                }
+            }
         });
 
 		if (
@@ -54,6 +91,15 @@ export default function ProjectEdit() {
 
 		return true;
 	};
+
+    useEffect(() => {
+        if(!formData.emailFieldErr) return;
+
+        if(formData.emailField.trim() && formData.emailFieldErr !== "Invalid email pattern") 
+            formData.setEmailFieldErr("");
+        if(validateEmail(formData.emailField) && formData.emailFieldErr !== "Cannot be empty") 
+            formData.setEmailFieldErr("");
+    }, [formData.emailField]);
 
 	return (
 		<form action="" className="max-w-xl">
@@ -138,7 +184,10 @@ export default function ProjectEdit() {
                                     name={t.id}
                                     placeholder="Title"
                                     value={t.title}
-                                    onChange={(e) => tasks.editTitle(t, e.target.value)}
+                                    onChange={(e) => {
+                                        formData.setTaskFieldErr("");
+                                        tasks.editTitle(t, e.target.value);
+                                    }}
                                 />
                                 <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-[13px] shadow-pressed bg-gradient px-2.5 py-[2.5px] ${t.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
                                     <span className={`rounded-full w-1.5 h-1.5 inline-block mr-2 ${t.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
@@ -148,7 +197,10 @@ export default function ProjectEdit() {
                             <div className="flex flex-row flex-nowrap gap-4">
                                 <button
                                     className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark"
-                                    onClick={() => tasks.remove(t)}
+                                    onClick={() => {
+                                        formData.setTaskFieldErr("");
+                                        tasks.remove(t);
+                                    }}
                                 >
                                     <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
                                         <polyline points="3 6 5 6 21 6"/>
@@ -201,11 +253,12 @@ export default function ProjectEdit() {
                                     return;
                                 }
                                 if (
-                                    !formData.emailField.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+                                    !validateEmail(formData.emailField)
                                 ) {
                                     formData.setEmailFieldErr("Invalid email pattern");
                                     return;
                                 }
+
 								members.add(formData.emailField);
                                 formData.setEmailField("");
 							}}
@@ -241,18 +294,16 @@ export default function ProjectEdit() {
                                     value={u.email}
                                     onChange={(e) => {
                                         formData.setEmailFieldErr("");
-                                        if (
-                                            !e.target.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-                                        ) {
-                                            formData.setEmailFieldErr("All member emails must have a valid email pattern.");
-                                        }
                                         members.edit(u, e.target.value);
                                     }}
                                 />
                             </div>
                             <button
                                 className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark"
-                                onClick={() => members.remove(u)}
+                                onClick={() => {
+                                    formData.setEmailFieldErr("");
+                                    members.remove(u)
+                                }}
                             >
                                 <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
                                     <polyline points="3 6 5 6 21 6"/>
