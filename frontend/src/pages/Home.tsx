@@ -15,11 +15,11 @@ export default function Home() {
 	return projects.length > 0 ? (
 		projects.map((project) => (
 			<div
-				className="min-w-80 max-w-xl md:w-4/5 mb-6 p-6 shadow-bold rounded-2xl relative hover:shadow-bold-hover transition-custom-all"
+				className="max-w-xl md:w-4/5 mb-6 p-6 shadow-bold rounded-2xl relative hover:shadow-bold-hover transition-custom-all"
 				key={project.title}
 			>
-                <div className="flex flex-row justify-between items-center flex-nowrap mb-3">
-                    <p className="text-2xl font-semibold mb-2 text-primary mr-6">{project.title}</p>
+                <div className="flex flex-col sm:flex-row justify-between md:items-center items-start flex-nowrap mb-4 gap-4">
+                    <p className="text-2xl font-semibold text-primary">{project.title}</p>
                     <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-sm shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
                         <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
                         {project.status}
