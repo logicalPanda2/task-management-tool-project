@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validateEmail from "../utils/validateEmail";
 
 export default function Login() {
@@ -25,6 +25,12 @@ export default function Login() {
         return true;
     }
 
+    useEffect(() => {
+        if(email.trim() && emailErr !== "Invalid email pattern") setEmailErr("");
+        if(validateEmail(email) && emailErr !== "Email cannot be empty") setEmailErr("");
+        if(password.trim()) setPasswordErr("");
+    }, [email, password]);
+
 	return (
 		<div className="flex justify-center items-center md:min-h-screen min-h-[75vh] bg-default">
 			<main className="flex flex-col flex-nowrap justify-center w-2/3 max-w-md">
@@ -44,11 +50,7 @@ export default function Login() {
 							id="emailInput"
 							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1"
 							value={email}
-							onChange={(e) => {
-                                if(email.trim() && emailErr !== "Invalid email pattern") setEmailErr("");
-                                if(validateEmail(email) && emailErr !== "Email cannot be empty") setEmailErr("");
-                                setEmail(e.target.value);
-                            }}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
                         {emailErr && <span className="text-sm text-danger-dark">
                             {emailErr}
@@ -64,10 +66,7 @@ export default function Login() {
 							id="passwordInput"
 							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1"
 							value={password}
-							onChange={(e) => {
-                                if(password.trim()) setPasswordErr("");
-                                setPassword(e.target.value)
-                            }}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
                         {passwordErr && <span className="text-sm text-danger-dark">
                             {passwordErr}
