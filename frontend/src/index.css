@@ -76,6 +76,8 @@
 @utility stroke-accent { stroke: var(--accent); }
 @utility stroke-success { stroke: var(--success); }
 @utility stroke-success-dark { stroke: var(--success-dark); }
+@utility stroke-danger { stroke: var(--danger); }
+@utility stroke-danger-dark { stroke: var(--danger-dark); }
 @utility text-accent-dark { color: var(--accent-dark); }
 @utility text-danger { color: var(--danger); }
 @utility text-danger-dark { color: var(--danger-dark); }
