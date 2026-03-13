@@ -104,7 +104,7 @@ export default function ProjectEdit() {
 					<h2 className="text-2xl mb-5">Tasks</h2>
 				</header>
                 <button
-                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark"
+                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark mb-5"
                     onClick={(e) => {
 						e.preventDefault();
                         formData.setTaskFieldErr("");
@@ -122,55 +122,56 @@ export default function ProjectEdit() {
 						{formData.taskFieldErr}
 					</span>
 				)}
-				{tasks.list.map((task, index) => {
+				{tasks.list.map((t, i) => {
 					return (
-						<div className="mb-5" key={task.id}>
-							<label
-								htmlFor={task.id}
-								className="mb-1 inline-block"
-							>{`Task ${index + 1}`}</label>
-							<input
-								autoComplete="false"
-								type="text"
-								name={task.id}
-								id={task.id}
-								placeholder="Title"
-								className="border rounded focus-visible:outline-1 px-4 py-2 max-w-xl w-full"
-								value={task.title}
-								onChange={(e) => {
-                                    formData.setTaskFieldErr("");
-									tasks.editTitle(task, e.target.value);
-								}}
-							/>
-							<p className="mt-2">Status: {task.status}</p>
-							<button
-								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2 mt-4"
-								onClick={(e) => {
-									e.preventDefault();
-									tasks.remove(task);
-								}}
-							>
-								Remove
-							</button>
-							<button
-								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
-								onClick={(e) => {
-									e.preventDefault();
-									tasks.editStatus(task, "COMPLETE");
-								}}
-							>
-								Mark as done
-							</button>
-							<button
-								className="bg-black rounded text-white hover:bg-neutral-800 focus-visible:outline-0 focus-visible:bg-neutral-800 active:bg-neutral-700 px-2 py-0.5 transition mr-2 mt-4"
-								onClick={(e) => {
-									e.preventDefault();
-									tasks.editStatus(task, "INCOMPLETE");
-								}}
-							>
-								Mark as todo
-							</button>
-						</div>
+						<div
+                            className="flex flex-col justify-between items-start relative mb-4 max-w-lg p-4 rounded-lg bg-default shadow-default hover:shadow-bold-hover transition-custom-all"
+                            key={t.id}
+                            onClick={() => document.getElementById(String(i))?.focus()}
+                        >
+                            <div className="flex sm:flex-row flex-col justify-between w-full items-start flex-nowrap mb-8 sm:mb-5 gap-4 sm:gap-0">
+                                <input
+                                    type="text"
+                                    autoComplete="false"
+                                    className="text-primary text-lg focus-visible:outline-0 resize-none w-full sm:w-2/3 [scrollbar-width:none]"
+                                    id={String(i)}
+                                    name={String(i)}
+                                    placeholder="Title"
+                                    value={t.title}
+                                    onChange={(e) => tasks.editTitle(t, e.target.value)}
+                                />
+                                <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-[13px] shadow-pressed bg-gradient px-2.5 py-[2.5px] ${t.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
+                                    <span className={`rounded-full w-1.5 h-1.5 inline-block mr-2 ${t.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
+                                    {t.status}
+                                </p>
+                            </div>
+                            <div className="flex flex-row flex-nowrap gap-4">
+                                <button
+                                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark"
+                                    onClick={() => tasks.remove(t)}
+                                >
+                                    <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                                        <polyline points="3 6 5 6 21 6"/>
+                                        <path d="M19 6l-1 14H6L5 6"/>
+                                        <path d="M10 11v6M14 11v6"/>
+                                        <path d="M9 6V4h6v2"/>
+                                    </svg>
+                                    Delete
+                                </button>
+                                <button
+                                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success text-sm font-semibold stroke-success hover:stroke-success-dark"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        tasks.editStatus(t, t.status === "COMPLETE" ? "INCOMPLETE" : "COMPLETE");
+                                    }}
+                                >
+                                    <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12"/>
+                                    </svg>
+                                    Done
+                                </button>
+                            </div>
+                        </div>
 					);
 				})}
 			</section>
