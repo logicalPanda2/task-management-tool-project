@@ -83,7 +83,7 @@ export default function ProjectView() {
 								className="flex flex-col justify-between items-start relative mb-4 max-w-lg p-4 rounded-lg bg-default shadow-default"
 								key={t.id}
 							>
-								<div className="flex sm:flex-row flex-col justify-between w-full items-start flex-nowrap mb-8 sm:mb-8 gap-4 sm:gap-0">
+								<div className="flex sm:flex-row flex-col justify-between w-full items-start flex-nowrap mb-8 sm:mb-5 gap-4 sm:gap-0">
                                     <p className="text-primary text-lg max-w-full sm:max-w-2/3">
                                         {t.title}
                                     </p>
