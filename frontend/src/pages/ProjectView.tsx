@@ -162,9 +162,17 @@ export default function ProjectView() {
 						</button>
 					</div>
 				</section>
-				<Link className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1.5 px-4 mr-4 transition" to={"edit"}>
-					Edit Project
-				</Link>
+				<div className="hover:transform-[translateY(-1px)] transition-custom-all w-fit">
+                    <Link
+                        to={`edit`}
+                        className="bg-gradient shadow-default text-primary px-4 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent flex flex-row flex-nowrap items-center stroke-neutral-800/50 hover:stroke-accent"
+                    >
+                        Edit
+                        <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 ml-1.5 mt-0.5" viewBox="0 0 24 24">
+                            <path d="M5 12h14M13 6l6 6-6 6"/>
+                        </svg>
+                    </Link>
+                </div>
 			</article>
 		</>
 	);
