@@ -224,37 +224,45 @@ export default function ProjectEdit() {
 					)}
 				</div>
 				{(
-					members.emails.map((u) => (
-						<div
-							className="flex flex-row flex-nowrap justify-between items-center mb-5 border max-w-2xl p-4 rounded"
-							key={u.id}
-						>
-							<input
-								type="text"
-								id={`${u.id}`}
-								name={`${u.id}`}
-								value={u.email}
-								onChange={(e) => {
-                                    e.preventDefault();
-                                    formData.setEmailFieldErr("");
-                                    if (
-                                        !e.target.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-                                    ) {
-                                        formData.setEmailFieldErr("All member emails must have a valid email pattern.");
-                                    }
-									members.edit(u, e.target.value);
-								}}
-							></input>
-							<button
-								className="bg-red-600 rounded text-white hover:bg-red-700 focus-visible:outline-0 focus-visible:bg-red-700 active:bg-red-800 px-2 py-0.5 transition mr-2"
-								onClick={(e) => {
-									e.preventDefault();
-									members.remove(u);
-								}}
-							>
-								Remove
-							</button>
-						</div>
+					members.emails.map((u, i) => (
+                        <div
+                            className="flex flex-col justify-between items-start relative mb-4 max-w-lg p-4 rounded-lg bg-default shadow-default hover:shadow-bold-hover transition-custom-all"
+                            key={u.id}
+                            onClick={() => document.getElementById(String(i))?.focus()}
+                        >
+                            <div className="flex sm:flex-row flex-col justify-between w-full items-start flex-nowrap mb-8 sm:mb-5 gap-4 sm:gap-0">
+                                <input
+                                    type="text"
+                                    autoComplete="false"
+                                    className="text-primary text-lg focus-visible:outline-0 resize-none w-full sm:w-2/3 [scrollbar-width:none]"
+                                    id={String(i)}
+                                    name={String(i)}
+                                    placeholder="Title"
+                                    value={u.email}
+                                    onChange={(e) => {
+                                        formData.setEmailFieldErr("");
+                                        if (
+                                            !e.target.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+                                        ) {
+                                            formData.setEmailFieldErr("All member emails must have a valid email pattern.");
+                                        }
+                                        members.edit(u, e.target.value);
+                                    }}
+                                />
+                            </div>
+                            <button
+                                className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark"
+                                onClick={() => members.remove(u)}
+                            >
+                                <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6l-1 14H6L5 6"/>
+                                    <path d="M10 11v6M14 11v6"/>
+                                    <path d="M9 6V4h6v2"/>
+                                </svg>
+                                Remove
+                            </button>
+                        </div>
 					))
 				)}
 			</section>
