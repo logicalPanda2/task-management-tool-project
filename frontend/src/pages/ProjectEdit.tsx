@@ -104,7 +104,7 @@ export default function ProjectEdit() {
 					<h2 className="text-2xl mb-5">Tasks</h2>
 				</header>
                 <button
-                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark mb-5"
+                    className={`bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark ${formData.taskFieldErr ? "mb-2" : "mb-5"}`}
                     onClick={(e) => {
 						e.preventDefault();
                         formData.setTaskFieldErr("");
@@ -118,24 +118,24 @@ export default function ProjectEdit() {
                     New task
                 </button>
 				{formData.taskFieldErr && (
-					<span className="text-sm text-danger-dark block">
+					<span className="text-sm text-danger-dark block mb-5">
 						{formData.taskFieldErr}
 					</span>
 				)}
-				{tasks.list.map((t, i) => {
+				{tasks.list.map((t) => {
 					return (
 						<div
                             className="flex flex-col justify-between items-start relative mb-4 max-w-lg p-4 rounded-lg bg-default shadow-default hover:shadow-bold-hover transition-custom-all"
                             key={t.id}
-                            onClick={() => document.getElementById(String(i))?.focus()}
+                            onClick={() => document.getElementById(t.id)?.focus()}
                         >
                             <div className="flex sm:flex-row flex-col justify-between w-full items-start flex-nowrap mb-8 sm:mb-5 gap-4 sm:gap-0">
                                 <input
                                     type="text"
                                     autoComplete="false"
                                     className="text-primary text-lg focus-visible:outline-0 resize-none w-full sm:w-2/3 [scrollbar-width:none]"
-                                    id={String(i)}
-                                    name={String(i)}
+                                    id={t.id}
+                                    name={t.id}
                                     placeholder="Title"
                                     value={t.title}
                                     onChange={(e) => tasks.editTitle(t, e.target.value)}
@@ -180,7 +180,7 @@ export default function ProjectEdit() {
 					<h2 className="text-2xl mb-5">Members</h2>
 				</header>
 				<div>
-					<div className="flex flex-row flex-nowrap items-center mb-5">
+					<div className={`flex flex-row flex-nowrap items-center ${formData.emailFieldErr ? "mb-1" : "mb-5"}`}>
 						<input
 							autoComplete="false"
 							type="text"
@@ -218,25 +218,25 @@ export default function ProjectEdit() {
 						</button>
 					</div>
 					{formData.emailFieldErr && (
-						<span className="text-sm text-danger-dark">
+						<span className="text-sm text-danger-dark mb-5 inline-block">
 							{formData.emailFieldErr}
 						</span>
 					)}
 				</div>
 				{(
-					members.emails.map((u, i) => (
+					members.emails.map((u) => (
                         <div
                             className="flex flex-col justify-between items-start relative mb-4 max-w-lg p-4 rounded-lg bg-default shadow-default hover:shadow-bold-hover transition-custom-all"
                             key={u.id}
-                            onClick={() => document.getElementById(String(i))?.focus()}
+                            onClick={() => document.getElementById(u.id)?.focus()}
                         >
                             <div className="flex sm:flex-row flex-col justify-between w-full items-start flex-nowrap mb-8 sm:mb-5 gap-4 sm:gap-0">
                                 <input
                                     type="text"
                                     autoComplete="false"
                                     className="text-primary text-lg focus-visible:outline-0 resize-none w-full sm:w-2/3 [scrollbar-width:none]"
-                                    id={String(i)}
-                                    name={String(i)}
+                                    id={u.id}
+                                    name={u.id}
                                     placeholder="Title"
                                     value={u.email}
                                     onChange={(e) => {
