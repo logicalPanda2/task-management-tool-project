@@ -1,19 +1,21 @@
 import useFormData from "../hooks/useFormData";
 import useTasks from "../hooks/useTasks";
 import useMembers from "../hooks/useMembers";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 export default function ProjectEdit() {
-    const params = useParams();
+    // const params = useParams();
 
-    if(!("id" in params)) return <p>Project Creation Placeholder</p>;
+    // if(!("id" in params)) return <p>Project Creation Placeholder</p>;
     // if there is no id, return as is. if there is an id, populate hooks with fetched project data from (project(params.id));
+    // set an additional mode inline flag to switch text depending on edit or create
     
 	const formData = useFormData();
 	const tasks = useTasks();
 	const members = useMembers();
+    const isEditing = false;
 
-	const sendData = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+	const sendData = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
 		validate();
@@ -55,19 +57,18 @@ export default function ProjectEdit() {
 
 	return (
 		<form action="" className="max-w-xl">
-			<section className="mb-6">
+			<section className="mb-10">
 				<header>
-					<h2 className="text-2xl mb-4">Project details</h2>
+					<h2 className="text-3xl mb-5 text-primary font-semibold">{isEditing ? "Edit project" : "New project"}</h2>
 				</header>
-				<div className="flex flex-col gap-1 mb-4">
-					<label htmlFor="titleInput">TITLE</label>
+				<div className="flex flex-col gap-1 mb-5">
+					<label htmlFor="titleInput">Title</label>
 					<input
 						autoComplete="false"
 						type="text"
 						name="title"
 						id="titleInput"
-						placeholder="Title"
-						className="border rounded focus-visible:outline-1 px-4 py-2"
+						className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1"
 						value={formData.title}
 						onChange={(e) => {
                             formData.setTitleErr("");
@@ -75,18 +76,16 @@ export default function ProjectEdit() {
                         }}
 					/>
 					{formData.titleErr && (
-						<span className="mt-1 text-red-600">{formData.titleErr}</span>
+						<span className="text-sm text-danger-dark">{formData.titleErr}</span>
 					)}
 				</div>
 				<div className="flex flex-col gap-1">
-					<label htmlFor="descriptionInput">DESCRIPTION</label>
-					<input
+					<label htmlFor="descriptionInput">Description</label>
+					<textarea
 						autoComplete="false"
-						type="text"
 						name="description"
 						id="descriptionInput"
-						placeholder="Description"
-						className="border rounded focus-visible:outline-1 px-4 py-2"
+						className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1 resize-none min-h-40 [scrollbar-width:none]"
 						value={formData.description}
 						onChange={(e) => {
                             formData.setDescriptionErr("");
@@ -94,34 +93,38 @@ export default function ProjectEdit() {
                         }}
 					/>
 					{formData.descriptionErr && (
-						<span className="mt-1 text-red-600">
+						<span className="text-sm text-danger-dark">
 							{formData.descriptionErr}
 						</span>
 					)}
 				</div>
 			</section>
-			<section className="mb-6">
+			<section className="mb-10">
 				<header>
-					<h2 className="text-2xl mb-4">Tasks</h2>
+					<h2 className="text-2xl mb-5">Tasks</h2>
 				</header>
-				<button
-					className="bg-black rounded text-white px-3 py-1.5 focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 transition mb-4"
-					onClick={(e) => {
+                <button
+                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark"
+                    onClick={(e) => {
 						e.preventDefault();
                         formData.setTaskFieldErr("");
 						tasks.add();
 					}}
-				>
-					Add task
-				</button>
+                >
+                    <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    New task
+                </button>
 				{formData.taskFieldErr && (
-					<span className="mb-4 text-red-600 block">
+					<span className="text-sm text-danger-dark block">
 						{formData.taskFieldErr}
 					</span>
 				)}
 				{tasks.list.map((task, index) => {
 					return (
-						<div className="mb-4" key={task.id}>
+						<div className="mb-5" key={task.id}>
 							<label
 								htmlFor={task.id}
 								className="mb-1 inline-block"
@@ -171,24 +174,24 @@ export default function ProjectEdit() {
 					);
 				})}
 			</section>
-			<section className="mb-6">
+			<section className="mb-10">
 				<header>
-					<h2 className="text-2xl mb-4">Members</h2>
+					<h2 className="text-2xl mb-5">Members</h2>
 				</header>
 				<div>
-					<div className="flex flex-row flex-nowrap items-center mb-4">
+					<div className="flex flex-row flex-nowrap items-center mb-5">
 						<input
 							autoComplete="false"
 							type="text"
 							name="userEmail"
 							id="userEmailInput"
 							placeholder="Add someone.."
-							className="border rounded focus-visible:outline-1 px-4 py-2"
+                            className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1"
 							value={formData.emailField}
 							onChange={(e) => formData.setEmailField(e.target.value)}
 						/>
 						<button
-							className="bg-black rounded text-white hover:bg-neutral-900 focus-visible:outline-0 focus-visible:bg-neutral-900 active:bg-neutral-800 py-1 px-3 ml-4"
+							className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark ml-4"
 							onClick={(e) => {
 								e.preventDefault();
                                 formData.setEmailFieldErr("");
@@ -206,19 +209,23 @@ export default function ProjectEdit() {
                                 formData.setEmailField("");
 							}}
 						>
-							Add
+                            <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+							Invite
 						</button>
 					</div>
 					{formData.emailFieldErr && (
-						<span className="mb-4 text-red-600 block">
+						<span className="text-sm text-danger-dark">
 							{formData.emailFieldErr}
 						</span>
 					)}
 				</div>
-				{members.emails.length > 0 ? (
+				{(
 					members.emails.map((u) => (
 						<div
-							className="flex flex-row flex-nowrap justify-between items-center mb-4 border max-w-2xl p-4 rounded"
+							className="flex flex-row flex-nowrap justify-between items-center mb-5 border max-w-2xl p-4 rounded"
 							key={u.id}
 						>
 							<input
@@ -248,18 +255,18 @@ export default function ProjectEdit() {
 							</button>
 						</div>
 					))
-				) : (
-					<p className="text-xl text-neutral-900">
-						There are no added members yet.
-					</p>
 				)}
 			</section>
-			<input
-				type="submit"
-				value="Confirm"
-				className="bg-black text-white px-4 py-2 rounded focus-visible:outline-0 focus-visible:bg-neutral-900 hover:bg-neutral-900 active:bg-neutral-800 transition max-w-md w-full"
-				onClick={(e) => sendData(e)}
-			/>
+            <button
+                className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success text-sm font-semibold stroke-success hover:stroke-success-dark"
+                onClick={(e) => sendData(e)}
+                type="submit"
+            >
+                <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Confirm
+            </button>
 		</form>
 	);
 }
