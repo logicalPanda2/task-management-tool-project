@@ -165,7 +165,7 @@ export default function ProjectView() {
 				<div className="hover:transform-[translateY(-1px)] transition-custom-all w-fit">
                     <Link
                         to={`edit`}
-                        className="bg-gradient shadow-default text-primary px-4 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent flex flex-row flex-nowrap items-center stroke-neutral-800/50 hover:stroke-accent"
+                        className="bg-gradient shadow-default text-primary px-4 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent flex flex-row flex-nowrap items-center stroke-neutral-800 hover:stroke-accent"
                     >
                         Edit
                         <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 ml-1.5 mt-0.5" viewBox="0 0 24 24">
