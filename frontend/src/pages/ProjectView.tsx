@@ -11,12 +11,12 @@ export default function ProjectView() {
 
     // replace all data below with a fetch for project(params.id)
 	const project = {
-		title: "Placeholder project",
-		description:
-			"this is just a placeholder, folks. Lorem ipsum dolor sit amet consectetur adipiscing elit.",
-		status: "INCOMPLETE",
-		id: crypto.randomUUID(),
-	};
+        title: "Placeholder project",
+        description:
+            "this is just a placeholder, folks. Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit. Longer description, act like this is important. This is definitely important.",
+        status: "INCOMPLETE",
+        id: crypto.randomUUID(),
+    };
     const tasks = useTasks([
         {
             title: "Task 1",
@@ -58,26 +58,23 @@ export default function ProjectView() {
 	return (
 		<>
 			<article>
-				<section className="mb-8">
-					<header>
-						<h2 className="text-3xl mb-4">
-							{project.title}
-						</h2>
+				<section className="mb-10">
+					<header className="max-w-2xl flex flex-col sm:flex-row justify-between md:items-center items-start flex-nowrap mb-5 gap-4">
+                        <h2 className="text-3xl text-primary font-semibold">
+                            {project.title}
+                        </h2>
+                        <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
+                            <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
+                            {project.status}
+                        </p>
 					</header>
-					<p className="text-xl mb-2 max-w-2xl">
+					<p className="text-xl max-w-2xl text-secondary">
 						{project.description}
 					</p>
-					<p className="text-xl max-w-2xl">
-						This project is{" "}
-						<span className="font-semibold">
-							{project.status.toLowerCase()}
-						</span>
-						.
-					</p>
 				</section>
-				<section className="mb-8">
+				<section className="mb-10">
 					<header>
-						<h2 className="text-3xl mb-4">Tasks</h2>
+						<h2 className="text-2xl mb-5">Tasks</h2>
 					</header>
 					{tasks &&
 					tasks.list.length > 0 ? (
@@ -119,7 +116,7 @@ export default function ProjectView() {
 				</section>
 				<section className="mb-8">
 					<header>
-						<h2 className="text-3xl mb-4">Comments</h2>
+						<h2 className="text-2xl mb-5">Comments</h2>
 					</header>
 					{comments.list.length > 0 ? (
 						comments.list.map((c) => (
