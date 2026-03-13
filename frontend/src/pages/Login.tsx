@@ -42,7 +42,7 @@ export default function Login() {
 							type="text"
 							name="email"
 							id="emailInput"
-							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-default focus-visible:shadow-pressed focus-visible:outline-0 transition-custom-all"
+							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-default focus-visible:outline-1 transition-custom-all"
 							value={email}
 							onChange={(e) => {
                                 if(email.trim() && emailErr !== "Invalid email pattern") setEmailErr("");
@@ -62,7 +62,7 @@ export default function Login() {
 							type="password"
 							name="password"
 							id="passwordInput"
-							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-default focus-visible:shadow-pressed focus-visible:outline-0 transition-custom-all"
+							className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-default focus-visible:outline-1 transition-custom-all"
 							value={password}
 							onChange={(e) => {
                                 if(password.trim()) setPasswordErr("");
@@ -76,7 +76,7 @@ export default function Login() {
 					<input
 						type="submit"
 						value="Submit"
-						className="bg-gradient-dark text-light px-4 py-2 rounded-lg shadow-default-dark hover:shadow-hover-dark active:bg-gradient-dark-pressed transition-custom-all focus-visible:bg-gradient-dark-pressed focus-visible:outline-0"
+						className="bg-gradient-dark text-light px-4 py-2 rounded-lg shadow-default-dark hover:shadow-hover-dark active:bg-gradient-dark-pressed transition-custom-all focus-visible:outline-[1.5px] focus-visible:outline-accent focus-visible:border-white focus-visible:border"
                         onClick={(e) => {
                             e.preventDefault();
                             validate();
