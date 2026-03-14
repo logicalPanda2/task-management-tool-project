@@ -1,16 +1,19 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../api/api";
 
 export default function Home() {
-	const projects: Project[] = [
-		{
-			title: "Placeholder project",
-			description:
-				"this is just a placeholder, folks. Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit. Longer description, act like this is important. This is definitely important.",
-			status: "INCOMPLETE",
-			id: crypto.randomUUID(),
-		},
-	];
-    // some role based API fetch that gets all projects
+    const [projects, setProjects] = useState<Project[]>([]);
+
+	useEffect(() => {
+        api.get("api/projects")
+        .then((res) => {
+            setProjects(res.data);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    }, []);
 
 	return projects.length > 0 ? (
 		projects.map((project) => (
