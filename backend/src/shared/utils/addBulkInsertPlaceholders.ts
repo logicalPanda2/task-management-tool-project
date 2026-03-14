@@ -8,10 +8,11 @@ export default function addBulkInsertPlaceholders(
 	let placeholder = "";
 
 	for (let i = 1; i <= totalPlaceholders; i++) {
-		placeholder += `$${i}`;
+		placeholder += `$${i},`;
 
 		if (i % placeholdersPerItem === 0) {
-			placeholders.push(`(${placeholder})`);
+            const removedTrailingComma = placeholder.slice(0, placeholder.length - 1);
+			placeholders.push(`(${removedTrailingComma})`);
 			placeholder = "";
 		}
 	}
