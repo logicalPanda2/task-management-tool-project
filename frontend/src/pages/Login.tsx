@@ -6,13 +6,22 @@ import api from "../api/api";
 const LOGIN_PATH = "/login";
 
 export default function Login() {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        if(token) 
+            navigate("/", {
+                replace: true,
+            });
+    }, [token]);
+
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
     const [emailErr, setEmailErr] = useState<string>("");
     const [passwordErr, setPasswordErr] = useState<string>("");
-    const [registerToastVisible, setVisibility] = useState<boolean>(false);  
+    const [registerToastVisible, setVisibility] = useState<boolean>(false);
     const location = useLocation();
-    const navigate = useNavigate();
     const mode: "REGISTER" | "LOGIN" = location.pathname === LOGIN_PATH ? "LOGIN" : "REGISTER";
 
     const validate = (): boolean => {
@@ -73,7 +82,7 @@ export default function Login() {
         if(password.trim()) setPasswordErr("");
     }, [email, password]);
 
-	return (
+	return !token ? (
 		<div className="flex justify-center items-center md:min-h-screen min-h-[75vh] bg-default relative">
             {registerToastVisible && mode === "REGISTER" && <Link
                 to={"/login"}
@@ -135,5 +144,5 @@ export default function Login() {
 				</form>
 			</main>
 		</div>
-	);
+	) : <></>;
 }
