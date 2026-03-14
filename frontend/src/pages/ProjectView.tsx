@@ -1,51 +1,29 @@
 import { Link, useParams } from "react-router-dom";
 import NotFound from "./NotFound";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useTasks from "../hooks/useTasks";
 import useComments from "../hooks/useComments";
+import api from "../api/api";
 
 export default function ProjectView() {
     const params = useParams();
 
     if(!("id" in params)) return <NotFound />;
+    
+	const [project, setProject] = useState<Record<string, string>>();
 
-    // replace all data below with a fetch for project(params.id)
-	const [project, setProject] = useState({
-        title: "Placeholder project",
-        description:
-            "this is just a placeholder, folks. Lorem ipsum dolor sit amet consectetur adipiscing elit. Adipiscing elit. Longer description, act like this is important. This is definitely important.",
-        status: "INCOMPLETE",
-        id: crypto.randomUUID(),
-    });
-    const tasks = useTasks([
-        {
-            title: "This is a very very long text title made for the purposes of testing the wrapping capability of the task card.",
-            status: "INCOMPLETE",
-            id: crypto.randomUUID(),
-        },
-        {
-            title: "Task 2",
-            status: "INCOMPLETE",
-            id: crypto.randomUUID(),
-        },
-        {
-            title: "Task 3",
-            status: "INCOMPLETE",
-            id: crypto.randomUUID(),
-        },
-    ]);
-	const comments = useComments([
-		{
-			user: "User 1",
-			title: "Cool project my guy",
-			id: crypto.randomUUID(),
-		},
-		{
-			user: "User 2",
-			title: "Looks good dude, good luck!",
-			id: crypto.randomUUID(),
-		},
-	]);
+    useEffect(() => {
+        api.get(`/api/projects/${params.id}`)
+        .then((res) => {
+            setProject(res.data.project.metadata);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+    }, []);
+
+    const tasks = useTasks();
+	const comments = useComments();
 	const [commentField, setCommentField] = useState<string>("");
 
     const postComment = (userEmail: string, content: string): void => {
@@ -61,21 +39,21 @@ export default function ProjectView() {
 				<section className="mb-10">
 					<header className="max-w-2xl flex flex-col sm:flex-row justify-between md:items-center items-start flex-nowrap mb-5 gap-4">
                         <h2 className="text-3xl text-primary font-semibold">
-                            {project.title}
+                            {project?.title}
                         </h2>
-                        <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
-                            <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
-                            {project.status}
+                        <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project?.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
+                            <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project?.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
+                            {project?.status}
                         </p>
 					</header>
 					<p className="text-xl max-w-2xl text-secondary">
-						{project.description}
+						{project?.description}
 					</p>
                     <button
                         className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark mt-4"
                         onClick={() => setProject({
                             ...project,
-                            status: project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE",
+                            status: project?.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE",
                         })}
                     >
                         <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">

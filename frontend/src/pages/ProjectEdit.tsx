@@ -1,27 +1,63 @@
 import useFormData from "../hooks/useFormData";
 import useTasks from "../hooks/useTasks";
 import useMembers from "../hooks/useMembers";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import validateEmail from "../utils/validateEmail";
-// import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../api/api";
 
 export default function ProjectEdit() {
-    // const params = useParams();
+    const params = useParams();
+    const navigate = useNavigate();
+    const [initialData, setInitialData] = useState<any>(); 
+    const mode = useRef<"CREATE" | "EDIT">("CREATE");
 
-    // if(!("id" in params)) return <p>Project Creation Placeholder</p>;
-    // if there is no id, return as is. if there is an id, populate hooks with fetched project data from (project(params.id));
-    // set an additional mode inline flag to switch text depending on edit or create
+    useEffect(() => {
+        if(
+            !("id" in params) ||
+            typeof params.id !== "string"
+        ) {
+            setInitialData(null);
+            return;
+        }
+
+        api.get(`/api/projects/${params.id}`)
+        .then((res) => {
+            setInitialData(res.data.project.metadata);
+            mode.current = "EDIT";
+        }).catch((e) => {
+            console.error(e);
+        });
+    }, [params]);
     
-	const formData = useFormData();
+	const formData = useFormData(initialData?.title ?? "", initialData?.description ?? "");
 	const tasks = useTasks();
 	const members = useMembers();
     const [projectStatus, setProjectStatus] = useState<Status>("INCOMPLETE");
-    const isEditing = false;
 
-	const sendData = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		e.preventDefault();
+	const sendData = () => {
+		if(!validate()) return false;
+        
+        const stable_id = crypto.randomUUID();
 
-		validate();
+        if(mode.current === "CREATE") {
+            api.post(`/api/projects/${stable_id}`, {
+                title: formData.title,
+                description: formData.description,
+                id: stable_id,
+                status: projectStatus,
+            }).then((_res) => {
+                navigate("/", {
+                    replace: true,
+                });
+            }).catch((e) => {
+                console.error(e);
+            });
+        } else if(mode.current === "EDIT") {
+
+        }
+
+        return false;
 	};
 
 	const validate = () => {
@@ -30,17 +66,28 @@ export default function ProjectEdit() {
 		formData.setTaskFieldErr("");
 		formData.setEmailFieldErr("");
 
-		if (!tasks.list.length)
+        let isInvalid = false;
+
+		if (!tasks.list.length) {
 			formData.setTaskFieldErr("A project must have at least one task");
-		if (!formData.title.trim()) formData.setTitleErr("Cannot be empty");
-		if (!formData.description.trim()) formData.setDescriptionErr("Cannot be empty");
+            isInvalid = true;
+        }
+		if (!formData.title.trim()) {
+            formData.setTitleErr("Cannot be empty");
+        }
+		if (!formData.description.trim()) {
+            formData.setDescriptionErr("Cannot be empty");
+            isInvalid = true;
+        }
 
         const taskErrString = "Title of task";
         const taskErrArray: string[] = [];
         const taskErrString2 = "cannot be empty";
 		tasks.list.forEach((t, i) => {
-			if (!t.title.trim())
-				taskErrArray.push(`${i + 1}`);
+			if (!t.title.trim()) {
+                taskErrArray.push(`${i + 1}`);
+                isInvalid = true;
+            }
 
             if(i === tasks.list.length - 1 && taskErrArray.length) {
                 switch(taskErrArray.length) {
@@ -62,8 +109,10 @@ export default function ProjectEdit() {
         const emailErrArray: string[] = [];
         const emailErrString2 = "has an invalid pattern";
         members.emails.forEach((m, i) => {
-            if(!validateEmail(m.email))
+            if(!validateEmail(m.email)) {
                 emailErrArray.push(`${i + 1}`);
+                isInvalid = true;
+            }
 
             if(i === members.emails.length - 1 && emailErrArray.length) {
                 switch(emailErrArray.length) {
@@ -81,14 +130,7 @@ export default function ProjectEdit() {
             }
         });
 
-		if (
-            formData.titleErr || 
-            formData.descriptionErr || 
-            formData.taskFieldErr ||
-            formData.emailFieldErr
-        ) {
-			return false;
-		}
+        if(isInvalid) return false;
 
 		return true;
 	};
@@ -106,7 +148,7 @@ export default function ProjectEdit() {
 		<form action="" className="max-w-xl">
 			<section className="mb-10">
 				<header>
-					<h2 className="text-3xl mb-5 text-primary font-semibold">{isEditing ? "Edit project" : "New project"}</h2>
+					<h2 className="text-3xl mb-5 text-primary font-semibold">{mode.current === "EDIT" ? "Edit project" : "New project"}</h2>
 				</header>
 				<div className="flex flex-col gap-1 mb-5">
 					<label htmlFor="titleInput">Title</label>
@@ -145,7 +187,7 @@ export default function ProjectEdit() {
 						</span>
 					)}
 				</div>
-                {isEditing && <div className="mt-6 justify-between flex flex-row flex-nowrap items-center">
+                {mode.current === "EDIT" && <div className="mt-6 justify-between flex flex-row flex-nowrap items-center">
                     <button
                         className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark"
                         onClick={(e) => {
@@ -338,7 +380,10 @@ export default function ProjectEdit() {
 			</section>
             <button
                 className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success text-sm font-semibold stroke-success hover:stroke-success-dark"
-                onClick={(e) => sendData(e)}
+                onClick={(e) => {
+                    e.preventDefault();
+                    sendData();
+                }}
                 type="submit"
             >
                 <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">

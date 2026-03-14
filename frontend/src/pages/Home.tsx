@@ -8,7 +8,7 @@ export default function Home() {
 	useEffect(() => {
         api.get("/api/projects")
         .then((res) => {
-            setProjects(res.data);
+            setProjects(res.data.projects);
         })
         .catch((err) => {
             console.error(err);
