@@ -31,16 +31,14 @@ TBA
 
 ## TODO
 1. integrate frontend with backend:
-    1. enable logging out
-    2. disable going to login page or register if user is already logged in
-    3. add option to switch to register from login page
-    4. add member relations to project on creation and edit
-    5. enable updating tasks in edit page
-    6. fix login issue where access token is the same every time
-    7. add refresh logic
-    8. enable marking tasks as done in both view and edit
-    9. add loading states
+    - wire member and task hooks to database 
+    - enforce role based access on projects
+    - add loading states
+    - fix login issue where access token is the same every time
+    - add refresh logic
 2. add soft deletion, done/undo toasts, confirmation dialogs
+3. major refactor: extraction, component modularization, file modularization DRY, simplify logic
+4. add additional animations and transitions with Motion
 
 ## License
 <a href="./LICENSE.txt">MIT License</a>
