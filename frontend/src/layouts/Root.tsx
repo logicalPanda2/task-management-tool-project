@@ -1,6 +1,14 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export default function Root() {
+    const navigate = useNavigate();
+    const logOut = (): void => {
+        localStorage.removeItem("token");
+        navigate("/login", {
+            replace: true,
+        });
+    }
+
 	return (
 		<div className="flex flex-col flex-nowrap min-h-screen relative bg-default">
 			<header className="flex flex-col md:flex-row flex-nowrap justify-between md:items-center sticky top-0 px-12 py-6 z-10 bg-transparent backdrop-blur-lg border-b-neutral-200 border-b">
@@ -35,6 +43,14 @@ export default function Root() {
 			<main className="flex flex-col grow flex-nowrap p-12">
 				<Outlet />
 			</main>
+            <footer className="mb-8 mx-12">
+                <button
+                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark"
+                    onClick={logOut}
+                >
+                    Log out
+                </button>
+            </footer>
 		</div>
 	);
 }
