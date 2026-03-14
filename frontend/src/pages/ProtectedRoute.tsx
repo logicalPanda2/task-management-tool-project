@@ -14,5 +14,5 @@ export default function ProtectedRoute({ children }: {
             });
     }, [token]);
 
-    return token ? children : <></>;
+    return token ? children : <div className="min-h-screen min-w-screen bg-default"></div>;
 }
