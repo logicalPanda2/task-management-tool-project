@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import validateEmail from "../utils/validateEmail";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../api/api";
 
 const LOGIN_PATH = "/login";
@@ -12,6 +12,7 @@ export default function Login() {
     const [passwordErr, setPasswordErr] = useState<string>("");
     const [registerToastVisible, setVisibility] = useState<boolean>(false);  
     const location = useLocation();
+    const navigate = useNavigate();
     const mode: "REGISTER" | "LOGIN" = location.pathname === LOGIN_PATH ? "LOGIN" : "REGISTER";
 
     const validate = (): boolean => {
@@ -49,7 +50,9 @@ export default function Login() {
                 if(res.status !== 200) throw new Error(`${res.status} ${res.statusText}`);
                 const token = res.data;
                 localStorage.setItem("token", JSON.stringify(token));
-                window.location.pathname = "/";
+                navigate("/", {
+                    replace: true,
+                });
             } catch(e) {
                 console.error(e);
                 setPasswordErr("Invalid password");
