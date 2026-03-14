@@ -15,6 +15,7 @@ export default function AppRoutes() {
                 <Route path="project/:id/edit" element={<ProjectEdit />} />
                 <Route path="project/new" element={<ProjectEdit />} />
 			</Route>
+            <Route path="/register" element={<Login />} />
 			<Route path="/login" element={<Login />} />
             <Route path="/404" element={<NotFound />} /> 
 			<Route path="*" element={<NotFound />} />
