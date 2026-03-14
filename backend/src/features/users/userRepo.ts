@@ -9,6 +9,19 @@ export async function getUserByEmail(email: string): Promise<UserConfidentialDat
 	return result?.rows[0];
 }
 
+export async function getAllByProjectId(projectId: string): Promise<User[]> {
+    const result = await pool?.query(
+		`SELECT u.email, u.id
+        FROM users u
+        INNER JOIN user_projects up
+        ON u.id = up.user_id
+        WHERE up.project_id = $1;`,
+		[projectId],
+	);
+
+	return result?.rows as User[];
+}
+
 export async function getUserById(id: string): Promise<UserConfidentialData | undefined> {
 	const result = await pool?.query(
 		`SELECT id, email, password FROM users WHERE id = $1;`,

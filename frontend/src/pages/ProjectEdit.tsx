@@ -33,7 +33,7 @@ export default function ProjectEdit() {
 	const formData = useFormData(initialData?.metadata.title ?? "", initialData?.metadata.description ?? "");
     const TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER = useMemo(() => [], []);
 	const tasks = useTasks(initialData?.tasks ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
-	const members = useMembers();
+	const members = useMembers(initialData?.members ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
     const [projectStatus, setProjectStatus] = useState<Status>("INCOMPLETE");
 
 	const sendData = () => {
@@ -49,7 +49,8 @@ export default function ProjectEdit() {
                     id: stable_id,
                     status: projectStatus,
                 },
-                tasks: tasks.list
+                tasks: tasks.list,
+                members: members.emails,
             }).then((_res) => {
                 navigate("/", {
                     replace: true,
