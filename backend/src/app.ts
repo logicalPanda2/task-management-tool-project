@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import logMiddleware from "./shared/middlewares/logMiddleware.js";
 import errorMiddleware from "./shared/middlewares/errorMiddleware.js";
-import _authMiddleware from "./shared/middlewares/authMiddleware.js";
+import authMiddleware from "./shared/middlewares/authMiddleware.js";
 import authRouter from "./features/auth/authRouter.js";
 import projectRouter from "./features/projects/projectRouter.js";
 import taskRouter from "./features/tasks/taskRouter.js";
@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(logMiddleware);
 app.use("/auth", authRouter);
 
-// app.use(authMiddleware);
+app.use(authMiddleware);
 
 app.use("/projects", projectRouter);
 app.use("/tasks", taskRouter);
