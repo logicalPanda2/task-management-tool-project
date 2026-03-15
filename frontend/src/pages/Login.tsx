@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import validateEmail from "../utils/validateEmail";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import validateEmail from "../utils/validateEmail";
 import api from "../api/api";
 
 const LOGIN_PATH = "/login";
