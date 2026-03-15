@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import useTasks from "../hooks/useTasks";
 import useComments from "../hooks/useComments";
 import useProject from "../hooks/useProject";
+import useMembers from "../hooks/useMembers";
 import LoadingSpinner from "../components/LoadingSpinner";
 import api from "../api/api";
 
@@ -17,6 +18,7 @@ export default function ProjectView() {
 	const project = useProject();
     const tasks = useTasks();
 	const comments = useComments();
+    const members = useMembers();
     const [isFetching, setFetching] = useState<boolean>(false);
 
     useEffect(() => {
@@ -34,6 +36,7 @@ export default function ProjectView() {
                 project.setStatus(res.data.metadata.status);
                 tasks.setList(res.data.tasks);
                 comments.setList(res.data.comments);
+                members.setEmails(res.data.members);
             } catch(e) {
                 console.error(e);
                 if( 
@@ -62,6 +65,7 @@ export default function ProjectView() {
             project={project}
             tasks={tasks}
             comments={comments}
+            updateProjectStatus={() => project.updateStatus(params.id!, tasks, members)}
         />;
 }
 
@@ -69,10 +73,12 @@ function Content({
     project,
     tasks,
     comments,
+    updateProjectStatus
 }: {
     project: ReturnType<typeof useProject>,
     tasks: ReturnType<typeof useTasks>,
     comments: ReturnType<typeof useComments>,
+    updateProjectStatus: () => void,
 }) {
     const [commentField, setCommentField] = useState<string>("");
     const postComment = (userEmail: string, content: string): void => {
@@ -101,7 +107,7 @@ function Content({
                             className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark mt-4 sm:mt-0"
                             onClick={(e) => {
                                 e.preventDefault();
-                                project.setStatus(project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE");
+                                updateProjectStatus();
                             }}
                         >
                             <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">

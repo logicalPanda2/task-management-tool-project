@@ -1,4 +1,7 @@
 import { useState } from "react";
+import api from "../api/api";
+import type useTasks from "./useTasks";
+import type useMembers from "./useMembers";
 
 export default function useProject(
     initialTitle: string = "",
@@ -9,12 +12,35 @@ export default function useProject(
 	const [description, setDescription] = useState<string>(initialDescription ?? "");
     const [status, setStatus] = useState<Status>(initialStatus ?? "INCOMPLETE");
 
+    function updateStatus(
+        id: string,
+        tasks: ReturnType<typeof useTasks>,
+        members: ReturnType<typeof useMembers>
+    ) {
+        try {
+            api.post(`/api/projects/${id}`, { 
+                project: {
+                    title: title,
+                    description: description,
+                    status: status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE",
+                    id: id,
+                },
+                tasks: tasks.list,
+                members: members.emails 
+            });
+            setStatus(status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE");
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
     return {
         title,
         description,
         status,
         setTitle,
         setDescription,
-        setStatus, 
+        setStatus,
+        updateStatus, 
     };
 }
