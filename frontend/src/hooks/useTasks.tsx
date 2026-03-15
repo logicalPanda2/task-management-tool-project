@@ -1,4 +1,5 @@
 import { useState } from "react";
+import api from "../api/api";
 
 export default function useTasks(initial: Task[] = []) {
 	const [list, setList] = useState<Task[]>(initial ?? []);
@@ -14,6 +15,14 @@ export default function useTasks(initial: Task[] = []) {
 	};
 
 	const editStatus = (task: Task, status: Status): void => {
+        api.post(`/api/tasks/${task.id}`, {
+            task: {
+                title: task.title,
+                status: task.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE",
+                id: task.id,
+            }
+        });
+
 		setList([
 			...list.map((t) =>
 				t.id === task.id

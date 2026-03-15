@@ -73,3 +73,25 @@ export async function remove(
 
 	return undefined;
 }
+
+export async function update(
+    req: Request,
+	res: Response,
+	next: (...args: any[]) => any,
+) {
+    try {
+		if (!("taskId" in req.params) || typeof req.params.taskId !== "string")
+			return res.sendStatus(400);
+
+        const { task } = req.body;
+		const id = req.params.taskId;
+
+		await taskRepo.updateById(id, task);
+
+		return res.sendStatus(204);
+	} catch (e) {
+		next(e);
+	}
+
+	return undefined;
+}
