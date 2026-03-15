@@ -1,4 +1,5 @@
 import pool from "../../config/db.js";
+import HttpError from "../../shared/classes/HttpError.js";
 
 export async function getAllByUserId(
 	userId: string,
@@ -23,13 +24,17 @@ export async function getAllByUserId(
 	return rows ? rows : [];
 }
 
-export async function getById(id: string): Promise<Project | null> {
-	const result = await pool?.query(
-		`SELECT title, description, status, id FROM projects WHERE id = $1;`,
-		[id],
-	);
+export async function getById(id: string): Promise<Project> {
+    try {
+        const result = await pool?.query(
+            `SELECT title, description, status, id FROM projects WHERE id = $1;`,
+            [id],
+        );
 
-	return result?.rows[0] ?? null;
+        return result?.rows[0] ?? null;
+    } catch(e) {
+        throw new HttpError(404, "Not Found");
+    }
 }
 
 export async function create(project: Project) {

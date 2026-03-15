@@ -5,13 +5,11 @@ import * as userRepo from "./../users/userRepo.js";
 
 export async function getFullProjectData(id: string): Promise<{
     metadata: Project,
-    comments: ProjectComment[] | null,
-    tasks: Task[] | null,
-    members: User[] | null,
+    comments: ProjectComment[],
+    tasks: Task[],
+    members: User[],
 }> {
 	const metadata = await projectRepo.getById(id);
-	if (!metadata) throw new Error("Invalid Project ID");
-
 	const tasks: Task[] = await taskRepo.getAllByProjectId(id);
 	const comments: ProjectComment[] = await commentRepo.getAllByProjectId(id);
     const members: User[] = await userRepo.getAllByProjectId(id);
