@@ -14,7 +14,7 @@ interface Task {
 interface ProjectComment {
 	title: string;
 	id: string;
-    user: string;
+    email: string;
 }
 
 // USERS

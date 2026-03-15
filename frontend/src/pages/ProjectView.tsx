@@ -70,6 +70,7 @@ export default function ProjectView() {
             comments={comments}
             updateProjectStatus={() => project.updateStatus(params.id!, tasks, members)}
             role={role}
+            paramsId={params.id!}
         />;
 }
 
@@ -79,20 +80,16 @@ function Content({
     comments,
     updateProjectStatus,
     role,
+    paramsId,
 }: {
     project: ReturnType<typeof useProject>,
     tasks: ReturnType<typeof useTasks>,
     comments: ReturnType<typeof useComments>,
     updateProjectStatus: () => void,
     role: UserRole,
+    paramsId: string,
 }) {
     const [commentField, setCommentField] = useState<string>("");
-    const postComment = (userEmail: string, content: string): void => {
-        if(!commentField.trim()) return;
-        
-        comments.post(userEmail, content);
-        setCommentField("");
-    }
 
     return (
 		<>
@@ -164,7 +161,7 @@ function Content({
 								key={c.id}
 							>
 								<div className="mb-2">
-									<p className="mb-2 text-secondary">{c.user}</p>
+									<p className="mb-2 text-secondary">{c.email}</p>
 									<p className="text-lg">{c.title}</p>
 								</div>
 								<button
@@ -200,7 +197,12 @@ function Content({
 						/>
 						<button
 							className="bg-gradient shadow-default text-primary px-4 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-secondary ml-4 hover:transform-[translateY(-1px)] "
-							onClick={() => postComment("placeholderEmail", commentField)}
+							onClick={() => {
+                                if(!commentField.trim()) return;
+        
+                                comments.post(commentField, paramsId);
+                                setCommentField("");
+                            }}
 						>
 							Post
 						</button>

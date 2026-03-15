@@ -40,7 +40,7 @@ export async function create(
 			return res.sendStatus(400);
 
 		const projectId = req.params.projectId;
-		const comment = req.body;
+		const { comment } = req.body;
 		const user = req.user;
 
 		if (!user) return res.sendStatus(400);
