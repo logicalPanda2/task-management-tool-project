@@ -64,6 +64,7 @@ export default function ProjectEdit() {
             tasks={tasks}
             members={members}
             formData={formData}
+            paramsId={params.id!} // safe non-null assertion as previous checks established string
         />
 }
 
@@ -73,25 +74,27 @@ function Content({
     tasks,
     members,
     formData,
+    paramsId
 }: {
     mode: ReturnType<typeof useRef<"CREATE" | "EDIT">>,
     project: ReturnType<typeof useProject>,
     tasks: ReturnType<typeof useTasks>,
     members: ReturnType<typeof useMembers>,
     formData: ReturnType<typeof useFormData>,
+    paramsId: string,
 }) {
     const navigate = useNavigate();
 
     const sendData = () => {
 		if(!validate()) return false;
         
-        const stable_id = crypto.randomUUID();
+        const id = mode.current === "CREATE" ? crypto.randomUUID() : paramsId;
 
-        api.post(`/api/projects/${stable_id}`, {
+        api.post(`/api/projects/${id}`, {
             project: {
                 title: project.title,
                 description: project.description,
-                id: stable_id,
+                id: id,
                 status: project.status,
             },
             tasks: tasks.list,

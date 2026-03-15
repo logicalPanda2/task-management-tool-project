@@ -27,29 +27,27 @@ export async function getFullProjectData(id: string): Promise<{
 export async function upsert(
     newProject: Project, 
     tasks: Task[], 
-    members: {email: string}[], 
+    members: User[], 
     userEmail: string
 ) {
+    // crude delete-all remake-all logic, and
+    // large room for performance optimization
+    // FIX LATER
 	const project = await projectRepo.getById(newProject.id);
+    if(project) await projectRepo.deleteById(project.id);
 
-	if (!project) {
-		const user = await userRepo.getUserByEmail(userEmail);
-		if (!user) return false;
+    const user = await userRepo.getUserByEmail(userEmail);
+    if (!user) return false;
 
-		await projectRepo.create(newProject);
-        await taskRepo.createMany(tasks, newProject.id);
-		await userRepo.addUserToProject(newProject.id, user.id, "CREATOR");
-        // large room for optimization. fix later at refactor phase
-        for(const m of members) {
-            const member = await userRepo.getUserByEmail(m.email);
-            if(!member) continue;
-            await userRepo.addUserToProject(newProject.id, member.id, "CONTRIBUTOR");
-        }
+    await projectRepo.create(newProject);
+    await taskRepo.createMany(tasks, newProject.id);
+    await userRepo.addUserToProject(newProject.id, user.id, "CREATOR");
+    for(const m of members) {
+        const contributor = await userRepo.getUserByEmail(m.email);
+        if(!contributor || contributor.id === user.id) continue;
+        await userRepo.addUserToProject(newProject.id, contributor.id, "CONTRIBUTOR");
+        console.log("this one");
+    }
 
-		return true;
-	} else {
-		await projectRepo.updateById(newProject.id, newProject);
-
-		return true;
-	}
+    return true;
 }
