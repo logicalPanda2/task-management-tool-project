@@ -1,37 +1,73 @@
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import NotFound from "./NotFound";
-import { useState, useEffect, useMemo } from "react";
 import useTasks from "../hooks/useTasks";
 import useComments from "../hooks/useComments";
-import api from "../api/api";
 import useProject from "../hooks/useProject";
+import LoadingSpinner from "../components/LoadingSpinner";
+import NotFound from "./NotFound";
+import api from "../api/api";
 
 export default function ProjectView() {
     const params = useParams();
     if(!("id" in params)) return <NotFound />;
 
-    const [initialTasks, setInitialTasks] = useState<Task[]>([]);
-    const [initialComments, setInitialComments] = useState<ProjectComment[]>([]);
 	const project = useProject();
-    const [commentField, setCommentField] = useState<string>("");
-    const TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER = useMemo(() => [], []);
-    const tasks = useTasks(initialTasks ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
-	const comments = useComments(initialComments ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
+    const tasks = useTasks();
+	const comments = useComments();
+    const [isFetching, setFetching] = useState<boolean>(false);
 
     useEffect(() => {
-        api.get(`/api/projects/${params.id}`)
-        .then((res) => {
-            project.setTitle(res.data.project.metadata.title);
-            project.setDescription(res.data.project.metadata.description);
-            project.setStatus(res.data.project.metadata.status);
-            setInitialTasks(res.data.project.tasks);
-            setInitialComments(res.data.project.comments);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+        let cancelled: boolean = false;
+
+        async function fetchProject() {
+            setFetching(true);
+            try {
+                const res = await api.get(`/api/projects/${params.id}`);
+
+                if(cancelled) throw new Error("Process aborted.");
+
+                project.setTitle(res.data.metadata.title);
+                project.setDescription(res.data.metadata.description);
+                project.setStatus(res.data.metadata.status);
+                tasks.setList(res.data.tasks);
+                comments.setList(res.data.comments);
+            } catch(e) {
+                console.error(e);
+            } finally {
+                setFetching(false);
+            }
+        }
+        
+        fetchProject();
+
+        return () => {
+            cancelled = true;
+        }
     }, []);
 
+    return isFetching 
+        ? <Loading />
+        : <Content 
+            project={project}
+            tasks={tasks}
+            comments={comments}
+        />;
+}
+
+function Loading() {
+    return <LoadingSpinner />;
+}
+
+function Content({
+    project,
+    tasks,
+    comments,
+}: {
+    project: ReturnType<typeof useProject>,
+    tasks: ReturnType<typeof useTasks>,
+    comments: ReturnType<typeof useComments>,
+}) {
+    const [commentField, setCommentField] = useState<string>("");
     const postComment = (userEmail: string, content: string): void => {
         if(!commentField.trim()) return;
         
