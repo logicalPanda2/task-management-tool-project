@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function useComments(initial: ProjectComment[] = []) {
-    const [list, setList] = useState<ProjectComment[]>(initial);
+    const [list, setList] = useState<ProjectComment[]>(initial ?? []);
+
+    useEffect(() => {
+        setList(initial);
+    }, [initial]);
 
 	const post = (user: string, content: string): void => {
         const newComment = {
