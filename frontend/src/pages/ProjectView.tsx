@@ -27,7 +27,7 @@ export default function ProjectView() {
             try {
                 const res = await api.get(`/api/projects/${params.id}`);
 
-                if(cancelled) throw new Error(`\nAPI fetch aborted.\nThis might be because of React's <StrictMode>.\nIf there are no other errors, ignore this error.\n`);
+                if(cancelled) return;
 
                 project.setTitle(res.data.metadata.title);
                 project.setDescription(res.data.metadata.description);

@@ -15,7 +15,7 @@ export default function Home() {
             try {
                 const res = await api.get(`/api/projects`);
 
-                if(cancelled) throw new Error(`\nAPI fetch aborted.\nThis might be because of React's <StrictMode>.\nIf there are no other errors, ignore this error.\n`);
+                if(cancelled) return;
 
                 setProjects(res.data.projects ?? []);
             } catch(e) {
