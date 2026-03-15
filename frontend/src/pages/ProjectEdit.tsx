@@ -14,6 +14,7 @@ export default function ProjectEdit() {
 	const tasks = useTasks();
 	const members = useMembers();
     const params = useParams();
+    const navigate = useNavigate();
     const [isFetching, setFetching] = useState<boolean>(false);
     const mode = useRef<"CREATE" | "EDIT">("CREATE");
 
@@ -44,6 +45,14 @@ export default function ProjectEdit() {
                 members.setEmails(res.data.members);
             } catch(e) {
                 console.error(e);
+                if( 
+                    typeof e === "object" &&
+                    e !== null &&
+                    "status" in e &&
+                    e.status === 404
+                ) navigate("/404", {
+                    replace: true,
+                });
             } finally {
                 setFetching(false);
             }
