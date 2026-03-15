@@ -246,9 +246,13 @@ function Content({
 						</span>
 					)}
 				</div>
-                {mode.current === "EDIT" && <div className="mt-6 justify-between flex flex-row flex-nowrap items-center">
+                {mode.current === "EDIT" && <div className="mt-6 justify-between flex flex-col sm:flex-row flex-nowrap items-start sm:items-center">
+                    <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
+                        <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
+                        {project.status}
+                    </p>
                     <button
-                        className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark"
+                        className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark mt-4 sm:mt-0"
                         onClick={(e) => {
                             e.preventDefault();
                             project.setStatus(project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE");
@@ -259,10 +263,6 @@ function Content({
                         </svg>
                         Finish project
                     </button>
-                    <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
-                        <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
-                        {project.status}
-                    </p>
                 </div>}
 			</section>
 			<section className="mb-10">
@@ -352,7 +352,7 @@ function Content({
 					<h2 className="text-2xl mb-5">Members</h2>
 				</header>
 				<div>
-					<div className={`flex flex-row flex-nowrap items-center ${formData.emailFieldErr ? "mb-1" : "mb-5"}`}>
+					<div className={`flex flex-col sm:flex-row flex-nowrap items-start sm:items-center ${formData.emailFieldErr ? "mb-1" : "mb-5"}`}>
 						<input
 							autoComplete="false"
 							type="text"
@@ -364,7 +364,7 @@ function Content({
 							onChange={(e) => formData.setEmailField(e.target.value)}
 						/>
 						<button
-							className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark ml-4"
+							className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-accent-dark hover:transform-[translateY(-1px)] text-accent text-sm font-semibold stroke-accent hover:stroke-accent-dark mt-4 sm:ml-4 sm:mt-0"
 							onClick={(e) => {
 								e.preventDefault();
                                 formData.setEmailFieldErr("");

@@ -86,27 +86,30 @@ function Content({
 		<>
 			<article>
 				<section className="mb-10">
-					<header className="max-w-2xl flex flex-col sm:flex-row justify-between md:items-center items-start flex-nowrap mb-5 gap-4">
-                        <h2 className="text-3xl text-primary font-semibold break-normal wrap-break-word hyphens-auto min-w-0">
-                            {project?.title}
-                        </h2>
-                        <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project?.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
-                            <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project?.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
-                            {project?.status}
-                        </p>
-					</header>
+                    <h2 className="text-3xl text-primary font-semibold wrap-anywhere hyphens-auto min-w-0 max-w-2xl mb-4">
+                        {project?.title}
+                    </h2>
 					<p className="text-xl max-w-2xl text-secondary">
 						{project?.description}
 					</p>
-                    <button
-                        className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark mt-4"
-                        onClick={() => project.setStatus(project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE")}
-                    >
-                        <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
-                            <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                        Finish project
-                    </button>
+                    <div className="mt-6 justify-between flex flex-col sm:flex-row flex-nowrap items-start sm:items-center max-w-xl">
+                        <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
+                            <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
+                            {project.status}
+                        </p>
+                        <button
+                            className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark mt-4 sm:mt-0"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                project.setStatus(project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE");
+                            }}
+                        >
+                            <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Finish project
+                        </button>
+                    </div>
 				</section>
 				<section className="mb-10">
 					<header>
