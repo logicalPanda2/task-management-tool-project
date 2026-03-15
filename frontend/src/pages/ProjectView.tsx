@@ -46,16 +46,12 @@ export default function ProjectView() {
     }, []);
 
     return isFetching 
-        ? <Loading />
+        ? <LoadingSpinner />
         : <Content 
             project={project}
             tasks={tasks}
             comments={comments}
         />;
-}
-
-function Loading() {
-    return <LoadingSpinner />;
 }
 
 function Content({
