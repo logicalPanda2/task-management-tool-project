@@ -43,14 +43,12 @@ export default function Root() {
 			<main className="flex flex-col grow flex-nowrap p-12">
 				<Outlet />
 			</main>
-            <footer className="mb-8 mx-12">
-                <button
-                    className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark"
-                    onClick={logOut}
-                >
-                    Log out
-                </button>
-            </footer>
+            <button
+                className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-danger-dark hover:transform-[translateY(-1px)] text-danger text-sm font-semibold stroke-danger hover:stroke-danger-dark absolute bottom-12 right-12"
+                onClick={logOut}
+            >
+                Log out
+            </button>
 		</div>
 	);
 }
