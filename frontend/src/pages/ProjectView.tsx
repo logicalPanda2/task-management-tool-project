@@ -1,32 +1,36 @@
 import { Link, useParams } from "react-router-dom";
 import NotFound from "./NotFound";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useTasks from "../hooks/useTasks";
 import useComments from "../hooks/useComments";
 import api from "../api/api";
+import useProject from "../hooks/useProject";
 
 export default function ProjectView() {
     const params = useParams();
-
     if(!("id" in params)) return <NotFound />;
-    
+
     const [initialTasks, setInitialTasks] = useState<Task[]>([]);
-	const [project, setProject] = useState<Record<string, string>>();
+    const [initialComments, setInitialComments] = useState<ProjectComment[]>([]);
+	const project = useProject();
+    const [commentField, setCommentField] = useState<string>("");
+    const TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER = useMemo(() => [], []);
+    const tasks = useTasks(initialTasks ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
+	const comments = useComments(initialComments ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
 
     useEffect(() => {
         api.get(`/api/projects/${params.id}`)
         .then((res) => {
-            setProject(res.data.project.metadata);
+            project.setTitle(res.data.project.metadata.title);
+            project.setDescription(res.data.project.metadata.description);
+            project.setStatus(res.data.project.metadata.status);
             setInitialTasks(res.data.project.tasks);
+            setInitialComments(res.data.project.comments);
         })
         .catch((err) => {
             console.error(err);
         });
     }, []);
-
-    const tasks = useTasks(initialTasks);
-	const comments = useComments();
-	const [commentField, setCommentField] = useState<string>("");
 
     const postComment = (userEmail: string, content: string): void => {
         if(!commentField.trim()) return;
@@ -53,10 +57,7 @@ export default function ProjectView() {
 					</p>
                     <button
                         className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark mt-4"
-                        onClick={() => setProject({
-                            ...project,
-                            status: project?.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE",
-                        })}
+                        onClick={() => project.setStatus(project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE")}
                     >
                         <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
                             <polyline points="20 6 9 17 4 12"/>

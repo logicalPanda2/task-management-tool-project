@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import validateEmail from "../utils/validateEmail";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/api";
+import useProject from "../hooks/useProject";
 
 export default function ProjectEdit() {
     const params = useParams();
@@ -30,11 +31,11 @@ export default function ProjectEdit() {
         });
     }, [params]);
     
-	const formData = useFormData(initialData?.metadata.title ?? "", initialData?.metadata.description ?? "");
+	const formData = useFormData();
     const TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER = useMemo(() => [], []);
 	const tasks = useTasks(initialData?.tasks ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
 	const members = useMembers(initialData?.members ?? TEMP_FIX_FOR_INFINITE_RENDERS_REMOVE_LATER);
-    const [projectStatus, setProjectStatus] = useState<Status>("INCOMPLETE");
+    const project = useProject(initialData?.metadata?.title, initialData?.metadata?.description, initialData?.metadata?.status);
 
 	const sendData = () => {
 		if(!validate()) return false;
@@ -44,10 +45,10 @@ export default function ProjectEdit() {
         if(mode.current === "CREATE") {
             api.post(`/api/projects/${stable_id}`, {
                 project: {
-                    title: formData.title,
-                    description: formData.description,
+                    title: project.title,
+                    description: project.description,
                     id: stable_id,
-                    status: projectStatus,
+                    status: project.status,
                 },
                 tasks: tasks.list,
                 members: members.emails,
@@ -77,10 +78,10 @@ export default function ProjectEdit() {
 			formData.setTaskFieldErr("A project must have at least one task");
             isInvalid = true;
         }
-		if (!formData.title.trim()) {
+		if (!project.title.trim()) {
             formData.setTitleErr("Cannot be empty");
         }
-		if (!formData.description.trim()) {
+		if (!project.description.trim()) {
             formData.setDescriptionErr("Cannot be empty");
             isInvalid = true;
         }
@@ -163,10 +164,10 @@ export default function ProjectEdit() {
 						name="title"
 						id="titleInput"
 						className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1"
-						value={formData.title}
+						value={project.title}
 						onChange={(e) => {
                             formData.setTitleErr("");
-                            formData.setTitle(e.target.value)
+                            project.setTitle(e.target.value);
                         }}
 					/>
 					{formData.titleErr && (
@@ -180,10 +181,10 @@ export default function ProjectEdit() {
 						name="description"
 						id="descriptionInput"
 						className="text-primary bg-gradient rounded-lg px-4 py-2 shadow-pressed focus-visible:outline-1 resize-none min-h-40 [scrollbar-width:none]"
-						value={formData.description}
+						value={project.description}
 						onChange={(e) => {
                             formData.setDescriptionErr("");
-                            formData.setDescription(e.target.value)
+                            project.setDescription(e.target.value)
                         }}
 					/>
 					{formData.descriptionErr && (
@@ -197,7 +198,7 @@ export default function ProjectEdit() {
                         className="bg-gradient shadow-default px-3 py-1.5 rounded-lg active:shadow-pressed active:bg-gradient-pressed active:text-secondary focus-visible:outline-1 transition-custom-all hover:text-success-dark hover:transform-[translateY(-1px)] text-success font-semibold stroke-success hover:stroke-success-dark"
                         onClick={(e) => {
                             e.preventDefault();
-                            setProjectStatus(projectStatus === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE");
+                            project.setStatus(project.status === "INCOMPLETE" ? "COMPLETE" : "INCOMPLETE");
                         }}
                     >
                         <svg className="fill-none stroke-inherit stroke-[1.5px] inline-block w-4 mr-2 mb-0.5" viewBox="0 0 24 24">
@@ -205,9 +206,9 @@ export default function ProjectEdit() {
                         </svg>
                         Finish project
                     </button>
-                    <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${projectStatus === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
-                        <span className={`rounded-full w-2 h-2 inline-block mr-2 ${projectStatus === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
-                        {projectStatus}
+                    <p className={`flex flex-row flex-nowrap items-center rounded-xl font-semibold text-md shadow-pressed bg-gradient px-3 py-0.5 ${project.status === "INCOMPLETE" ? "text-neutral-800/50" : "text-success"}`}>
+                        <span className={`rounded-full w-2 h-2 inline-block mr-2 ${project.status === "INCOMPLETE" ? "bg-neutral-800/40" : "bg-text-success"}`}></span>
+                        {project.status}
                     </p>
                 </div>}
 			</section>
