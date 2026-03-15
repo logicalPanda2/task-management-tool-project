@@ -87,28 +87,24 @@ function Content({
         
         const stable_id = crypto.randomUUID();
 
-        if(mode.current === "CREATE") {
-            api.post(`/api/projects/${stable_id}`, {
-                project: {
-                    title: project.title,
-                    description: project.description,
-                    id: stable_id,
-                    status: project.status,
-                },
-                tasks: tasks.list,
-                members: members.emails,
-            }).then((_res) => {
-                navigate("/", {
-                    replace: true,
-                });
-            }).catch((e) => {
-                console.error(e);
+        api.post(`/api/projects/${stable_id}`, {
+            project: {
+                title: project.title,
+                description: project.description,
+                id: stable_id,
+                status: project.status,
+            },
+            tasks: tasks.list,
+            members: members.emails,
+        }).then((_res) => {
+            navigate("/", {
+                replace: true,
             });
-        } else if(mode.current === "EDIT") {
-            // edit logic
-        }
+        }).catch((e) => {
+            console.error(e);
+        });
 
-        return false;
+        return undefined;
 	};
 
 	const validate = () => {
